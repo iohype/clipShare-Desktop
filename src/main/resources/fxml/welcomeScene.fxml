@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="543.0" prefWidth="721.0" styleClass="pane-color" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.IOhype.controllers.WelcomeSceneController">
+   <children>
+      <BorderPane layoutX="261.0" layoutY="163.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <HBox alignment="CENTER_LEFT" prefHeight="44.0" prefWidth="721.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label prefHeight="19.0" prefWidth="660.0" text="Clipshare">
+                     <graphic>
+                        <FontAwesomeIconView fill="#37474f" glyphName="CLIPBOARD" size="14" text="" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <JFXButton contentDisplay="GRAPHIC_ONLY">
+                     <graphic>
+                        <MaterialDesignIconView glyphName="WINDOW_CLOSE" size="18" />
+                     </graphic>
+                  </JFXButton>
+               </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </HBox>
+         </top>
+         <center>
+            <StackPane BorderPane.alignment="CENTER">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <FontAwesomeIconView fill="#546e7a" glyphName="CLIPBOARD" size="50">
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </FontAwesomeIconView>
+                        <Label text="Clipshare">
+                           <font>
+                              <Font name="System Bold" size="25.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="266.0" layoutY="226.0" text="Sync clipboard of connected devices">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <HBox alignment="CENTER" prefHeight="121.0" prefWidth="721.0" spacing="10.0">
+                           <children>
+                              <JFXButton prefHeight="35.0" prefWidth="227.0" styleClass="primary-btn" text="Connect as a server" />
+                              <JFXButton layoutX="257.0" layoutY="107.0" prefHeight="35.0" prefWidth="227.0" styleClass="outline-btn" text="Connect to a server" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </StackPane>
+         </center>
+         <bottom>
+            <HBox alignment="TOP_RIGHT" prefHeight="21.0" prefWidth="721.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label text="©IOhype 2020" />
+               </children>
+               <padding>
+                  <Insets bottom="3.0" left="10.0" right="10.0" />
+               </padding>
+            </HBox>
+         </bottom>
+      </BorderPane>
+   </children>
+</AnchorPane>
