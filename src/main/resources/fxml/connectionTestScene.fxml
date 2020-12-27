@@ -22,10 +22,10 @@
                         <Font name="System Bold" size="13.0" />
                      </font>
                      <graphic>
-                        <MaterialDesignIconView glyphName="ACCESS_POINT" size="18" />
+                        <MaterialDesignIconView glyphName="WIFI" size="18" />
                      </graphic>
                   </Label>
-                  <JFXButton fx:id="closeBtn" contentDisplay="GRAPHIC_ONLY">
+                  <JFXButton fx:id="closeBtn" contentDisplay="GRAPHIC_ONLY" styleClass="closeBtn">
                      <graphic>
                         <MaterialDesignIconView glyphName="WINDOW_CLOSE" size="18" />
                      </graphic>

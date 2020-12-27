@@ -24,7 +24,6 @@ public class Helper {
 
     }
 
-
     public static String getIpAddress() throws SocketException {
         String ip = "";
         Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();

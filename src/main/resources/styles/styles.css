@@ -1,7 +1,7 @@
 /* Application wide styles */
 
 .pane-color{
-    -fx-background-color: #fafafa;
+    -fx-background-color: #ffffff;
 }
 .primary-color{
     -fx-background-color: #37474f;
@@ -22,14 +22,20 @@
 }
 
 .fields {
-    -fx-background-color: white;
+    -fx-background-color: #fafafa;
     -fx-border-color: #e0e0e0;
     -fx-background-radius: 10px;
     -fx-border-radius: 10px;
 }
 
-.fields :hover{
+.fields:hover{
+    -fx-border-color:  #546e7a;
 }
 
-.fields :focused{
+.fields:focused{
+    -fx-border-color:  #546e7a;
+}
+
+.closeBtn:hover{
+    -fx-background-color: red;
 }
