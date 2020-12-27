@@ -1,9 +1,12 @@
 package com.IOhype;
 
+import com.IOhype.controllers.ConnectionTestController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.slf4j.Logger;
@@ -39,4 +42,23 @@ public class MainApp extends Application {
 
         return stage;
    }
+
+    public static boolean connectionTestStage() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        String fxmlLocation = "/fxml/connectionTestScene.fxml";
+        loader.setLocation( MainApp.class.getResource( fxmlLocation ) );
+        AnchorPane root = loader.load();
+        ConnectionTestController connectionTestController = loader.getController();
+
+        Stage stage =  new Stage();
+        stage.initStyle( StageStyle.UNDECORATED );
+        stage.initModality( Modality.APPLICATION_MODAL );
+        stage.setTitle( "Connection Test" );
+
+        Scene scene = new Scene( root );
+        stage.setScene( scene );
+        stage.showAndWait();
+
+        return connectionTestController.getReply();
+    }
 }

@@ -25,7 +25,7 @@
                         <MaterialDesignIconView glyphName="ACCESS_POINT" size="18" />
                      </graphic>
                   </Label>
-                  <JFXButton contentDisplay="GRAPHIC_ONLY">
+                  <JFXButton fx:id="closeBtn" contentDisplay="GRAPHIC_ONLY">
                      <graphic>
                         <MaterialDesignIconView glyphName="WINDOW_CLOSE" size="18" />
                      </graphic>
