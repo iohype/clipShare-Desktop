@@ -1,6 +1,7 @@
 package com.IOhype.controllers;
 
 import com.IOhype.MainApp;
+import com.IOhype.util.ClipboardService;
 import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,6 +11,7 @@ import javafx.scene.effect.BoxBlur;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -54,10 +56,17 @@ public class WelcomeSceneController implements Initializable {
     @FXML
     private StackPane stackPane;
 
+    private ClipboardService clipboardService = new ClipboardService( System.out::println );
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         serverPane.setOpacity( 0 );
         clientConnectionPane.setOpacity( 0 );
+
+        closeBtn.setOnAction( event -> System.exit( 0 ) );
+        EventQueue.invokeLater( clipboardService );
+        clipboardService.ClipBoardListener();
     }
 
     @FXML
