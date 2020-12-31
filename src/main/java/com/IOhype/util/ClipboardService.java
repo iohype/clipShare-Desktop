@@ -9,20 +9,22 @@ import java.util.function.Consumer;
 public class ClipboardService implements ClipboardOwner, Runnable {
     private final Clipboard SYSTEM_CLIPBOARD = Toolkit.getDefaultToolkit().getSystemClipboard();
     private final Consumer<String> bufferConsumer;
+    private String clipBoardContent;
 
     public ClipboardService(Consumer<String> bufferConsumer) {
         this.bufferConsumer = bufferConsumer;
     }
 
-    //        listen to clipboard changes
+    //listen to clipboard changes
     public void ClipBoardListener() {
         this.SYSTEM_CLIPBOARD.addFlavorListener( listener -> {
             try {
                 Transferable contents = SYSTEM_CLIPBOARD.getContents( this );
                 getOwnership( contents );
-                String clipText = (String) SYSTEM_CLIPBOARD.getData( DataFlavor.stringFlavor );
-                System.out.println( "Copied: " + clipText );
+                clipBoardContent = (String) SYSTEM_CLIPBOARD.getData( DataFlavor.stringFlavor );
+                System.out.println( "Copied: " + clipBoardContent );
                 Toolkit.getDefaultToolkit().beep();
+
             } catch (UnsupportedFlavorException | IOException e) {
                 e.printStackTrace();
             }
@@ -51,11 +53,16 @@ public class ClipboardService implements ClipboardOwner, Runnable {
         getOwnership( transferable );
     }
 
+    private void getOwnership(Transferable transferable) {
+        SYSTEM_CLIPBOARD.setContents( transferable, this );
+    }
+
     public void setBuffer(String buffer) {
         getOwnership( new StringSelection( buffer ) );
     }
 
-    private void getOwnership(Transferable transferable) {
-        SYSTEM_CLIPBOARD.setContents( transferable, this );
+    public String getClipBoardContent(){
+        return clipBoardContent;
     }
+
 }
