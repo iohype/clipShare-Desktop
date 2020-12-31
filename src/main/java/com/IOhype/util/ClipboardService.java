@@ -4,12 +4,14 @@ package com.IOhype.util;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.function.Consumer;
 
 public class ClipboardService implements ClipboardOwner, Runnable {
     private final Clipboard SYSTEM_CLIPBOARD = Toolkit.getDefaultToolkit().getSystemClipboard();
     private final Consumer<String> bufferConsumer;
     private String clipBoardContent;
+    private Timestamp timestamp;
 
     public ClipboardService(Consumer<String> bufferConsumer) {
         this.bufferConsumer = bufferConsumer;
@@ -25,6 +27,8 @@ public class ClipboardService implements ClipboardOwner, Runnable {
                 System.out.println( "Copied: " + clipBoardContent );
                 Toolkit.getDefaultToolkit().beep();
 
+                RestCall restCall = new RestCall();
+                System.out.println( restCall.putClipToServer( "192.168.43.142", clipBoardContent ) );
             } catch (UnsupportedFlavorException | IOException e) {
                 e.printStackTrace();
             }
@@ -39,10 +43,11 @@ public class ClipboardService implements ClipboardOwner, Runnable {
             try {
                 String string = (String) contents.getTransferData( DataFlavor.stringFlavor );
                 bufferConsumer.accept( string );
-                Toolkit.getDefaultToolkit();
+
             } catch (UnsupportedFlavorException | IOException e) {
                 e.printStackTrace();
             }
+
 
         }
     }
@@ -61,8 +66,17 @@ public class ClipboardService implements ClipboardOwner, Runnable {
         getOwnership( new StringSelection( buffer ) );
     }
 
-    public String getClipBoardContent(){
+    public String getClipBoardContent() {
         return clipBoardContent;
+    }
+
+    public Timestamp getTimestamp() {
+        if (timestamp == null) {
+            return new Timestamp( System.currentTimeMillis() );
+        } else {
+            return timestamp;
+        }
+
     }
 
 }

@@ -1,11 +1,16 @@
 package com.IOhype.util;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.*;
-import java.util.Enumeration;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static java.lang.System.out;
 
@@ -26,30 +31,33 @@ public class Helper {
 
     }
 
-    public static String getIpAddress() throws SocketException {
-        String ip = "";
-        Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-        while (interfaces.hasMoreElements()) {
-            NetworkInterface networkInterface = interfaces.nextElement();
-            if (networkInterface.isLoopback() || !networkInterface.isUp())
-                continue;
-            Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
-            while (addresses.hasMoreElements()) {
-                InetAddress address = addresses.nextElement();
-                ip = address.getHostAddress();
-                out.println( networkInterface.getDisplayName() + " " + ip + " " + address.getCanonicalHostName() );
-
-
-            }
-
-        }
-        return ip;
-    }
-
     public static void spinUpServer() throws IOException {
         File file = new File( new File( "" ).getAbsolutePath() + "\\tools\\" );
-        Process process = Runtime.getRuntime().exec( new String[]{"cmd","/c", ".\\pbgopy serve"}, null, file );
-        printResults(process);
+        Process process = Runtime.getRuntime().exec( new String[]{"cmd", "/c", ".\\pbgopy serve"}, null, file );
+        printResults( process );
+    }
+
+    public static void serverScheduler(String ipAddress) {
+        RestCall restCall = new RestCall();
+        ClipboardService clipboardService = new ClipboardService( System.out::println );
+        EventQueue.invokeLater( clipboardService );
+        clipboardService.ClipBoardListener();
+
+        Timer timer = new Timer();
+        TimerTask myTask = new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    if (!restCall.getServerClip( ipAddress ).contains( "The data not found" )) {
+                        clipboardService.setBuffer( restCall.getServerClip( ipAddress ) );
+                        out.println( "gotten from server" );
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        timer.schedule( myTask, 0, 5000 );
     }
 
     private static void printResults(Process process) throws IOException {
@@ -59,5 +67,7 @@ public class Helper {
             out.println( line );
         }
     }
+
+
 }
 

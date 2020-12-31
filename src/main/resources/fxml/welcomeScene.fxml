@@ -5,6 +5,7 @@
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -43,6 +44,77 @@
          <center>
             <StackPane fx:id="stackPane" BorderPane.alignment="CENTER">
                <children>
+                  <VBox fx:id="serverPane" prefHeight="200.0" prefWidth="100.0" styleClass="pane-color">
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                     <children>
+                        <Label text="Host Connections">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <Label text="Ensure all clients are connected to the same network with the host system" />
+                        <HBox>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                           <children>
+                              <Label text="Host Name:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="serverName_server" layoutX="10.0" layoutY="10.0" text="ADAM">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="8.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="1.0">
+                                 <HBox.margin>
+                                    <Insets left="20.0" />
+                                 </HBox.margin>
+                              </Separator>
+                              <Label layoutX="10.0" layoutY="10.0" text="IP Address:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Label fx:id="ipAddress_server" layoutX="98.0" layoutY="10.0" text="192.168.43.2020">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="8.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <VBox alignment="CENTER" prefHeight="269.0" prefWidth="681.0" spacing="20.0">
+                           <children>
+                              <Label fx:id="clipboard_server" alignment="CENTER" prefHeight="180.0" prefWidth="412.0" style="-fx-background-color: #eeeeee; -fx-background-radius: 15; -fx-border-color: #e0e0e0; -fx-border-radius: 15;" text="Clipboard content" textAlignment="CENTER" wrapText="true">
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </Label>
+                              <JFXButton fx:id="stopServerConnection" contentDisplay="RIGHT" onAction="#HandleDisconnectServerConnect" prefHeight="25.0" prefWidth="187.0" styleClass="primary-color" text="Stop Server" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </JFXButton>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="30.0" />
+                           </VBox.margin>
+                        </VBox>
+                     </children>
+                  </VBox>
                   <VBox fx:id="clientConnectionPane" prefHeight="200.0" prefWidth="100.0" styleClass="pane-color">
                      <padding>
                         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
@@ -78,56 +150,6 @@
                                  </padding>
                               </Label>
                               <JFXButton fx:id="disconnectBtn" contentDisplay="RIGHT" onAction="#HandleDisconnectClientConnect" prefHeight="25.0" prefWidth="187.0" styleClass="primary-color" text="Disconnect" textFill="WHITE">
-                                 <font>
-                                    <Font name="System Bold" size="13.0" />
-                                 </font>
-                              </JFXButton>
-                           </children>
-                           <VBox.margin>
-                              <Insets top="30.0" />
-                           </VBox.margin>
-                        </VBox>
-                     </children>
-                  </VBox>
-                  <VBox fx:id="serverPane" prefHeight="200.0" prefWidth="100.0" styleClass="pane-color">
-                     <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                     </padding>
-                     <children>
-                        <Label text="Host Connections">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                        </Label>
-                        <Label text="Ensure all clients are connected to the same network with the host system" />
-                        <HBox>
-                           <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin>
-                           <children>
-                              <Label text="Host Name:">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="serverName_server" layoutX="10.0" layoutY="10.0" text="ADAM">
-                                 <font>
-                                    <Font name="System Bold" size="15.0" />
-                                 </font>
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                              </Label>
-                           </children>
-                        </HBox>
-                        <VBox alignment="CENTER" prefHeight="269.0" prefWidth="681.0" spacing="20.0">
-                           <children>
-                              <Label fx:id="clipboard_server" alignment="CENTER" prefHeight="180.0" prefWidth="412.0" style="-fx-background-color: #eeeeee; -fx-background-radius: 15; -fx-border-color: #e0e0e0; -fx-border-radius: 15;" text="Clipboard content" textAlignment="CENTER" wrapText="true">
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </Label>
-                              <JFXButton fx:id="stopServerConnection" contentDisplay="RIGHT" onAction="#HandleDisconnectServerConnect" prefHeight="25.0" prefWidth="187.0" styleClass="primary-color" text="Stop Server" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="13.0" />
                                  </font>

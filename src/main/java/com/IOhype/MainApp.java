@@ -43,6 +43,21 @@ public class MainApp extends Application {
         return stage;
    }
 
+   public static Stage infoStage() throws IOException {
+       FXMLLoader loader = new FXMLLoader();
+       String fxmlLocation = "/fxml/infoScene.fxml";
+       loader.setLocation( MainApp.class.getResource( fxmlLocation ) );
+       AnchorPane root = loader.load();
+       Stage stage = new Stage();
+       stage.initStyle( StageStyle.UNDECORATED );
+       stage.setTitle( "Welcome" );
+
+       Scene scene = new Scene( root );
+       stage.setScene( scene );
+
+       return stage;
+   }
+
     public static boolean connectionTestStage() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         String fxmlLocation = "/fxml/connectionTestScene.fxml";
