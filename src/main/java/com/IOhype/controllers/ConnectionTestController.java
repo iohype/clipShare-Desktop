@@ -2,6 +2,7 @@ package com.IOhype.controllers;
 
 import com.IOhype.util.Alerts;
 import com.IOhype.util.Helper;
+import com.IOhype.util.RestCall;
 import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,6 +30,7 @@ public class ConnectionTestController implements Initializable {
 
     private Alerts alerts;
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         alerts = new Alerts();
@@ -41,11 +43,10 @@ public class ConnectionTestController implements Initializable {
         } );
     }
 
-
     @FXML
     private void ProceedEvent(ActionEvent event) throws IOException {
-        String ipAddress = ipAddressField.getText().trim();
-        if (Helper.isServerReachable( ipAddress, 9090 )) {
+        RestCall.ipAddress = ipAddressField.getText().trim();
+        if (Helper.isServerReachable( RestCall.ipAddress, 9090 )) {
             this.reply = true;
             closeBtn.getScene().getWindow().hide();
         } else {

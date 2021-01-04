@@ -1,6 +1,7 @@
 package com.IOhype;
 
 import com.IOhype.controllers.ConnectionTestController;
+import com.IOhype.util.Helper;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,6 +27,7 @@ public class MainApp extends Application {
     public void start(Stage stage) throws Exception {
         //show the welcome page as initial scene
         welcomePageStage( stage ).show();
+//        System.out.println(Helper.getSystemNetworkConfig().getHostAddress());
     }
 
     public static Stage welcomePageStage(Stage stage) throws IOException {
@@ -62,6 +64,7 @@ public class MainApp extends Application {
         FXMLLoader loader = new FXMLLoader();
         String fxmlLocation = "/fxml/connectionTestScene.fxml";
         loader.setLocation( MainApp.class.getResource( fxmlLocation ) );
+
         AnchorPane root = loader.load();
         ConnectionTestController connectionTestController = loader.getController();
 

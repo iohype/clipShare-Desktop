@@ -8,6 +8,8 @@ public class RestCall {
 
     private final String PORT_NUMBER = "9090";
 
+    public static  String ipAddress = "";
+
     private final OkHttpClient client = new OkHttpClient();
 
     //get clipboard from server
@@ -18,10 +20,13 @@ public class RestCall {
                 .build();
         Response response = client.newCall( request ).execute();
         if (response.isSuccessful()){
-            return response.body().string();
+            String response_body = response.body().string();
+            response.close();
+            return response_body;
+
         }
         else {
-            return "Failed";
+            return "Failed to get content";
         }
 
     }
@@ -36,10 +41,12 @@ public class RestCall {
                 .build();
         Response response = client.newCall( request ).execute();
         if (response.isSuccessful()) {
-            return "Successful";
+            response.close();
+            return "Successful to put";
         }
         else {
-            return "Failed";
+            response.close();
+            return "Failed to put";
         }
 
     }

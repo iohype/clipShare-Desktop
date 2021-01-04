@@ -6,6 +6,7 @@ import com.IOhype.MainApp;
 import com.IOhype.util.Alerts;
 import com.IOhype.util.ClipboardService;
 import com.IOhype.util.Helper;
+import com.IOhype.util.RestCall;
 import com.jfoenix.controls.JFXButton;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -19,6 +20,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.SocketException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ResourceBundle;
@@ -74,6 +76,7 @@ public class WelcomeSceneController implements Initializable {
 
     private Thread clientThread;
 
+    private InetAddress inetAddress;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -84,6 +87,9 @@ public class WelcomeSceneController implements Initializable {
         serverName_server.setText( null );
         ipAddress_server.setText( null );
 
+        this.clipboard_server.textProperty().bind( ClipboardService.clipString );
+        this.cllipboard_client.textProperty().bind( ClipboardService.clipString );
+
         //show information about software usage
         Platform.runLater( () -> {
             try {
@@ -91,6 +97,22 @@ public class WelcomeSceneController implements Initializable {
                 stackPane.setEffect( blur );
                 MainApp.infoStage().showAndWait();
                 stackPane.setEffect( null );
+
+                //perform heavy tasks
+                Thread thread = new Thread( () -> {
+                    try {
+                        inetAddress = Helper.getSystemNetworkConfig();
+                        Platform.runLater( () -> {
+                            serverName_server.setText( inetAddress.getCanonicalHostName() );
+                            ipAddress_server.setText( inetAddress.getHostAddress() );
+                        } );
+
+                    } catch (SocketException e) {
+                        e.printStackTrace();
+                    }
+                } );
+                thread.start();
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -103,8 +125,16 @@ public class WelcomeSceneController implements Initializable {
     private void HandleClientConnection(ActionEvent event) throws IOException {
         BoxBlur blur = new BoxBlur( 7, 7, 7 );
         stackPane.setEffect( blur );
-        MainApp.connectionTestStage();
+        boolean result = MainApp.connectionTestStage();
         stackPane.setEffect( null );
+
+        if (result) {
+            sceneChange( homePane, clientConnectionPane );
+            clientThread = new Thread( () -> {
+                Helper.serverScheduler( RestCall.ipAddress );
+            } );
+            clientThread.start();
+        }
     }
 
     @FXML
@@ -114,38 +144,32 @@ public class WelcomeSceneController implements Initializable {
     }
 
     @FXML
-    void HandleDisconnectClientConnect(ActionEvent event) {
-
+    private void HandleDisconnectClientConnect(ActionEvent event) {
+        sceneChange( clientConnectionPane, homePane );
+        clientThread.interrupt();
     }
 
     @FXML
-    private void HandleHostConnection(ActionEvent event) throws UnknownHostException {
-        if (Helper.getSystemNetworkConfig().getHostAddress().equals("") || Helper.getSystemNetworkConfig().toString().isEmpty()){
-            alerts.Notification( "CONNECTION NOT FOUND","Ensure you are connected to a network" );
-        }
-        else {
-            serverName_server.setText( Helper.getSystemNetworkConfig().getCanonicalHostName() );
-            ipAddress_server.setText( Helper.getSystemNetworkConfig().getHostAddress() );
-            // initialise server thread
-            serverThread = new Thread( () -> {
-                try {
-                    Helper.spinUpServer();
-                    Helper.serverScheduler( Helper.getSystemNetworkConfig().getHostAddress() );
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } );
-            //start server Thread
-            serverThread.start();
-            //change scene
-            sceneChange( homePane, serverPane );
-
-        }
+    private void HandleHostConnection(ActionEvent event) throws UnknownHostException, SocketException {
+        RestCall.ipAddress = inetAddress.getHostAddress();
+        // initialise server thread
+        serverThread = new Thread( () -> {
+            try {
+                Helper.spinUpServer();
+                Helper.serverScheduler( RestCall.ipAddress );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } );
+        //start server Thread
+        serverThread.start();
+        //change scene
+        sceneChange( homePane, serverPane );
 
     }
 
     // change scenes
-    private void sceneChange(Node oldScene, Node newScene){
+    private void sceneChange(Node oldScene, Node newScene) {
         FadeOut fadeOut = new FadeOut( oldScene );
         fadeOut.setSpeed( 2.0 );
         fadeOut.play();

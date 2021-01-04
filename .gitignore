@@ -1,4 +1,6 @@
 .idea/
 target/
 '.idea'
-'target' 
+'target'
+./classes
+'.classes'

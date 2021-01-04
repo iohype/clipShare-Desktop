@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="345.0" prefWidth="346.0" style="-fx-border-color: #e0e0e0;" styleClass="pane-color" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.IOhype.controllers.InfoSceneController">
+<AnchorPane prefHeight="387.0" prefWidth="346.0" style="-fx-border-color: #e0e0e0;" styleClass="pane-color" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.IOhype.controllers.InfoSceneController">
    <children>
       <BorderPane layoutX="73.0" layoutY="34.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -67,6 +67,14 @@
                         <Font size="13.0" />
                      </font>
                   </Label>
+                  <HBox alignment="CENTER_RIGHT">
+                     <children>
+                        <JFXButton fx:id="proceedBtn" prefHeight="31.0" prefWidth="97.0" styleClass="outline-btn" text="Proceed" />
+                     </children>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </HBox>
                </children>
             </VBox>
          </center>

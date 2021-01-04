@@ -127,12 +127,12 @@
                         </Label>
                         <HBox>
                            <children>
-                              <Label text="You are connected to ">
+                              <Label text="Status:">
                                  <font>
                                     <Font size="13.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="serverNameLbl_client" layoutX="10.0" layoutY="10.0" text="ADAM">
+                              <Label fx:id="serverNameLbl_client" layoutX="10.0" layoutY="10.0" text="Connected" textFill="RED">
                                  <font>
                                     <Font name="System Bold" size="13.0" />
                                  </font>
