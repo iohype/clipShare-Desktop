@@ -38,7 +38,11 @@
                     <keyStoreAlias>example-user</keyStoreAlias>
                     <keyStorePassword>example-password</keyStorePassword>
                     <allPermissions>true</allPermissions>
-
+                    <additionalAppResources>${project.basedir}/tools</additionalAppResources>
+                    <bundleArguments>
+                        <icon>${project.basedir}/src/main/deploy/package/windows/clip_share.ico</icon>
+                    </bundleArguments>
+                    <needShortcut>true</needShortcut>
                 </configuration>
             </plugin>
 
@@ -141,19 +145,6 @@
             <version>8.0.7</version>
         </dependency>
 
-        <!--Junit Library    -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testfx</groupId>
-            <artifactId>testfx-junit</artifactId>
-            <version>4.0.15-alpha</version>
-            <scope>test</scope>
-        </dependency>
         <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>

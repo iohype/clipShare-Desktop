@@ -62,7 +62,7 @@ public class Helper {
     }
 
     public static void spinUpServer() throws IOException {
-        File file = new File( new File( "" ).getAbsolutePath() + "\\tools\\" );
+        File file = new File( new File( "" ).getAbsolutePath() + "\\" );
         Process process = Runtime.getRuntime().exec( new String[]{"cmd", "/c", ".\\pbgopy serve"}, null, file );
         printResults( process );
     }

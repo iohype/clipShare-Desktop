@@ -70,8 +70,6 @@ public class WelcomeSceneController implements Initializable {
 
     private ClipboardService clipboardService = new ClipboardService( System.out::println );
 
-    private Alerts alerts = new Alerts();
-
     private Thread serverThread;
 
     private Thread clientThread;
@@ -86,6 +84,8 @@ public class WelcomeSceneController implements Initializable {
         closeBtn.setOnAction( event -> System.exit( 0 ) );
         serverName_server.setText( null );
         ipAddress_server.setText( null );
+        connectToHostBtn.setDisable( true );
+        connectToHostBtn.setDisable( true );
 
         this.clipboard_server.textProperty().bind( ClipboardService.clipString );
         this.cllipboard_client.textProperty().bind( ClipboardService.clipString );
@@ -99,19 +99,18 @@ public class WelcomeSceneController implements Initializable {
                 stackPane.setEffect( null );
 
                 //perform heavy tasks
-                Thread thread = new Thread( () -> {
+                Platform.runLater( () -> {
                     try {
                         inetAddress = Helper.getSystemNetworkConfig();
-                        Platform.runLater( () -> {
-                            serverName_server.setText( inetAddress.getCanonicalHostName() );
-                            ipAddress_server.setText( inetAddress.getHostAddress() );
-                        } );
-
+                        serverName_server.setText( inetAddress.getCanonicalHostName() );
+                        ipAddress_server.setText( inetAddress.getHostAddress() );
+                        connectToHostBtn.setDisable( false );
+                        connectToHostBtn.setDisable( false);
                     } catch (SocketException e) {
                         e.printStackTrace();
                     }
+
                 } );
-                thread.start();
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -150,7 +149,7 @@ public class WelcomeSceneController implements Initializable {
     }
 
     @FXML
-    private void HandleHostConnection(ActionEvent event) throws UnknownHostException, SocketException {
+    private void HandleHostConnection(ActionEvent event) {
         RestCall.ipAddress = inetAddress.getHostAddress();
         // initialise server thread
         serverThread = new Thread( () -> {
