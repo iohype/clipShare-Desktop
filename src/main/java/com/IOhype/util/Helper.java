@@ -1,5 +1,6 @@
 package com.IOhype.util;
 
+import com.sun.javafx.PlatformUtil;
 import javafx.application.Platform;
 
 import java.awt.*;
@@ -16,7 +17,6 @@ public class Helper {
 //    public static InetAddress getSystemNetworkConfig() throws UnknownHostException {
 //        return InetAddress.getLocalHost();
 //    }
-
 
     public static InetAddress getSystemNetworkConfig() throws SocketException {
         Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
@@ -49,7 +49,7 @@ public class Helper {
             return inet.get( 0 );
     }
 
-    public static boolean isServerReachable(String ipAddress, int portNumber) throws IOException {
+    public static boolean isServerReachable(String ipAddress, int portNumber) {
 
         Socket socket = new Socket();
         try {
@@ -62,8 +62,19 @@ public class Helper {
     }
 
     public static void spinUpServer() throws IOException {
-        File file = new File( new File( "" ).getAbsolutePath() + "\\" );
-        Process process = Runtime.getRuntime().exec( new String[]{"cmd", "/c", ".\\pbgopy serve"}, null, file );
+        Process process = null;
+        if (PlatformUtil.isWindows()){
+            File file = new File( new File( "" ).getAbsolutePath() + "\\" );
+            System.out.println("Running on Windows");
+            process = Runtime.getRuntime().exec( new String[]{"cmd", "/c", ".\\pbgopy serve"}, null, file );
+        }
+        else if (PlatformUtil.isLinux()){
+            File file = new File( new File( "" ).getAbsolutePath() + "/" );
+            System.out.println("Running on Linux");
+            process = Runtime.getRuntime().exec( new String[]{"/bin/sh", "-c", "./pbgopy serve"}, null, file );
+        }
+
+        assert process != null;
         printResults( process );
     }
 
@@ -94,7 +105,7 @@ public class Helper {
 
     private static void printResults(Process process) throws IOException {
         BufferedReader reader = new BufferedReader( new InputStreamReader( process.getInputStream() ) );
-        String line = "";
+        String line;
         while ((line = reader.readLine()) != null) {
             out.println( line );
         }

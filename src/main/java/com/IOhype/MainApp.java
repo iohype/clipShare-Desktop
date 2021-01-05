@@ -13,8 +13,13 @@ import javafx.stage.StageStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.*;
+
+import static java.lang.System.out;
 
 public class MainApp extends Application {
 
@@ -27,7 +32,8 @@ public class MainApp extends Application {
     public void start(Stage stage) throws Exception {
         //show the welcome page as initial scene
         welcomePageStage( stage ).show();
-//        System.out.println(Helper.getSystemNetworkConfig().getHostAddress());
+
+
     }
 
     public static Stage welcomePageStage(Stage stage) throws IOException {
