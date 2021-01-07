@@ -78,6 +78,7 @@ public class WelcomeSceneController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //initialize UI content
         serverPane.setOpacity(0);
         clientConnectionPane.setOpacity(0);
         serverName_server.setText(null);
@@ -86,11 +87,11 @@ public class WelcomeSceneController implements Initializable {
         connectToHostBtn.setDisable(true);
         timeline = null;
 
+        //bind labels to clip text
         this.clipboard_server.textProperty().bind(ClipboardService.clipString);
         this.cllipboard_client.textProperty().bind(ClipboardService.clipString);
 
-        closeBtn.setOnAction(event -> System.exit(130));
-
+        closeBtn.setOnAction(event -> System.exit(0)); // action event to close window
 
         //show information about software usage
         Platform.runLater(() -> {
@@ -133,11 +134,13 @@ public class WelcomeSceneController implements Initializable {
             sceneChange(homePane, clientConnectionPane);
             clientThread = new Thread(() -> {
                 if (timeline == null){
-                    timeline = Helper.serverScheduler(RestCall.ipAddress);
+                    try {
+                        timeline = Helper.serverScheduler(RestCall.ipAddress);  // schedule requests from the server
+                        timeline.play(); // starts timeline
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-
-               timeline.play();
-               // schedule requests from the server
             });
             clientThread.start();
         }

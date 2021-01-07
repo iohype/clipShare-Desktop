@@ -11,10 +11,9 @@ import java.sql.Timestamp;
 import java.util.function.Consumer;
 
 public class ClipboardService implements ClipboardOwner, Runnable {
-    private final Clipboard SYSTEM_CLIPBOARD = Toolkit.getDefaultToolkit().getSystemClipboard();
+    private final Clipboard SYSTEM_CLIPBOARD = Toolkit.getDefaultToolkit().getSystemClipboard(); //get system clipboard
     private final Consumer<String> bufferConsumer;
     public static SimpleStringProperty clipString = new SimpleStringProperty();
-    private Timestamp timestamp;
 
     public ClipboardService(Consumer<String> bufferConsumer) {
         this.bufferConsumer = bufferConsumer;
@@ -29,10 +28,11 @@ public class ClipboardService implements ClipboardOwner, Runnable {
                 String clip = (String) SYSTEM_CLIPBOARD.getData( DataFlavor.stringFlavor );
                 Platform.runLater( () -> clipString.set( clip ) );
                 System.out.println( "Copied: " + clipString.get() );
-                Toolkit.getDefaultToolkit().beep();
 
                 RestCall restCall = new RestCall();
-                System.out.println( restCall.putClipToServer( RestCall.ipAddress, clipString.get() ) );
+                System.out.println( restCall.putClipToServer( RestCall.ipAddress, clipString.get() ) ); // push to clip text to server
+
+                Toolkit.getDefaultToolkit().beep();
 
             } catch (UnsupportedFlavorException | IOException e) {
                 e.printStackTrace();
@@ -71,13 +71,5 @@ public class ClipboardService implements ClipboardOwner, Runnable {
         getOwnership( new StringSelection( buffer ) );
     }
 
-    public Timestamp getTimestamp() {
-        if (timestamp == null) {
-            return new Timestamp( System.currentTimeMillis() );
-        } else {
-            return timestamp;
-        }
-
-    }
 
 }

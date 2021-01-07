@@ -8,6 +8,8 @@ public class RestCall {
 
     private final String PORT_NUMBER = "9090";
 
+    public double serverTimestamp;
+
     public static  String ipAddress = "";
 
     private final OkHttpClient client = new OkHttpClient();
@@ -54,17 +56,21 @@ public class RestCall {
     }
 
     //get clipboard from server
-    public String getServerLastUpdatedTime(String ipAddress) throws IOException {
+    public double getServerLastUpdatedTime(String ipAddress) throws IOException {
         String getClipRoute = "http://"+ipAddress+":"+PORT_NUMBER+"/lastupdated";
         Request request = new Request.Builder()
                 .url( getClipRoute )
                 .build();
         Response response = client.newCall( request ).execute();
+
         if (response.isSuccessful()){
-            return response.body().string();
+            double timestamp =  Double.parseDouble(response.body().string());
+            response.close();
+            return timestamp;
         }
         else {
-            return "Failed";
+            response.close();
+            return 0;
         }
 
     }

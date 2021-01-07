@@ -23,7 +23,7 @@ public class Helper {
 //    public static InetAddress getSystemNetworkConfig() throws UnknownHostException {
 //        return InetAddress.getLocalHost();
 //    }
-
+    // filter through network interface to get connected Inet Address
     public static InetAddress getSystemNetworkConfig() throws SocketException {
         Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
         ArrayList<InetAddress> inet = new ArrayList<>();
@@ -55,6 +55,7 @@ public class Helper {
             return inet.get(0);
     }
 
+    //test if server is reachable
     public static boolean isServerReachable(String ipAddress, int portNumber) {
 
         Socket socket = new Socket();
@@ -67,6 +68,7 @@ public class Helper {
 
     }
 
+    //start up pbgopy server
     public static void spinUpServer() throws IOException {
         Process process = null;
         if (PlatformUtil.isWindows()) {
@@ -83,28 +85,37 @@ public class Helper {
 //        process.destroy();
     }
 
+    // kill the pbgopy server from running
     public static void killServer() throws IOException {
         Process process = Runtime.getRuntime().exec("killall pbgopy");
 //        kill -9 `jps | grep "DataNode" | cut -d " " -f 1`
         printResults(process);
     }
 
-    public static Timeline serverScheduler(String ipAddress) {
+    //automate request schedule to the server
+    public static Timeline serverScheduler(String ipAddress) throws IOException {
         RestCall restCall = new RestCall();
+        restCall.serverTimestamp = restCall.getServerLastUpdatedTime(ipAddress); // get a copy of the current server timestamp
         ClipboardService clipboardService = new ClipboardService(out::println);
         EventQueue.invokeLater(clipboardService);
-        clipboardService.ClipBoardListener();
+        clipboardService.ClipBoardListener(); //listen for clipboard changes
         Timeline timeline = new Timeline();
         timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(5),
                 e -> {
-
                     try {
-                        if (!restCall.getServerClip(ipAddress).contains("The data not found")) {
-                            clipboardService.setBuffer(restCall.getServerClip(ipAddress));
-                            String clip = restCall.getServerClip(ipAddress);
-                            Platform.runLater(() -> ClipboardService.clipString.set(clip));
-                            out.println("gotten from server");
+
+                        if (restCall.getServerLastUpdatedTime(ipAddress) != 0) { //check if timestamp is not set yet
+                            if (restCall.getServerLastUpdatedTime(ipAddress) > restCall.serverTimestamp) {
+                                clipboardService.setBuffer(restCall.getServerClip(ipAddress));
+                                String clip = restCall.getServerClip(ipAddress);
+                                Platform.runLater(() -> ClipboardService.clipString.set(clip)); //set clipboard content to show in UI
+                                out.println("Data fetched from server");
+                                restCall.serverTimestamp = restCall.getServerLastUpdatedTime(ipAddress); // reassign timestamp from server to device timestamp
+                            } else {
+                                out.println("Data in server is recent");
+                            }
                         }
+
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }
@@ -116,6 +127,7 @@ public class Helper {
         return timeline;
     }
 
+    //print process resultt o command line
     private static void printResults(Process process) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
         String line;
@@ -124,6 +136,7 @@ public class Helper {
         reader.close();
     }
 
+    //check if a string contains letters
     private static boolean checkStringForLetters(String string) {
         char ch;
         boolean letterFlag = false;
