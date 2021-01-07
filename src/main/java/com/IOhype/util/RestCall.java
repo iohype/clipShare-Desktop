@@ -26,7 +26,9 @@ public class RestCall {
 
         }
         else {
+            response.close();
             return "Failed to get content";
+
         }
 
     }

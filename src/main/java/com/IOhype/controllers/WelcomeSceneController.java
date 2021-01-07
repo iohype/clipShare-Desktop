@@ -7,6 +7,7 @@ import com.IOhype.util.ClipboardService;
 import com.IOhype.util.Helper;
 import com.IOhype.util.RestCall;
 import com.jfoenix.controls.JFXButton;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,9 +20,10 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.SocketException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class WelcomeSceneController implements Initializable {
     @FXML
@@ -66,27 +68,29 @@ public class WelcomeSceneController implements Initializable {
     @FXML
     private StackPane stackPane;
 
-    private final ClipboardService clipboardService = new ClipboardService(System.out::println);
-
     private Thread serverThread;
 
     private Thread clientThread;
 
     private InetAddress inetAddress;
 
+    private Timeline timeline;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         serverPane.setOpacity(0);
         clientConnectionPane.setOpacity(0);
-
-        closeBtn.setOnAction(event -> System.exit(0));
         serverName_server.setText(null);
         ipAddress_server.setText(null);
         connectToHostBtn.setDisable(true);
         connectToHostBtn.setDisable(true);
+        timeline = null;
 
         this.clipboard_server.textProperty().bind(ClipboardService.clipString);
         this.cllipboard_client.textProperty().bind(ClipboardService.clipString);
+
+        closeBtn.setOnAction(event -> System.exit(130));
+
 
         //show information about software usage
         Platform.runLater(() -> {
@@ -116,16 +120,6 @@ public class WelcomeSceneController implements Initializable {
             }
         });
 
-        //enable server to start up swiftly
-        Thread thread = new Thread(() -> {
-            try {
-                Helper.spinUpServer();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        thread.start();
-
     }
 
     @FXML
@@ -138,44 +132,54 @@ public class WelcomeSceneController implements Initializable {
         if (result) {
             sceneChange(homePane, clientConnectionPane);
             clientThread = new Thread(() -> {
-                Helper.serverScheduler(RestCall.ipAddress);
+                if (timeline == null){
+                    timeline = Helper.serverScheduler(RestCall.ipAddress);
+                }
+
+               timeline.play();
+               // schedule requests from the server
             });
             clientThread.start();
         }
     }
 
     @FXML
-    private void HandleDisconnectServerConnect(ActionEvent event) {
-        serverThread.interrupt();
-        sceneChange(serverPane, homePane);
+    private void HandleDisconnectServerConnect(ActionEvent event) throws IOException {
+        timeline.stop(); //stop the timeline from executing the keyframe action
+        Helper.killServer(); //kill the pbgopy server from receiving requests
+        serverThread.interrupt(); //stop the server thread from handling the server actions
+        serverThread = null;
+        sceneChange(serverPane, homePane); //change scene back to home scene
     }
 
     @FXML
     private void HandleDisconnectClientConnect(ActionEvent event) {
-        sceneChange(clientConnectionPane, homePane);
-        clientThread.interrupt();
+        timeline.stop(); //stop the timeline from executing the keyframe action
+        clientThread.interrupt(); // stop the thread handling the client actions
+        clientThread = null;
+        sceneChange(clientConnectionPane, homePane); //change scene back to home scene
     }
 
     @FXML
-    private void HandleHostConnection(ActionEvent event) {
+    private void HandleHostConnection(ActionEvent event) throws IOException {
         RestCall.ipAddress = inetAddress.getHostAddress();
         // initialise server thread
         serverThread = new Thread(() -> {
             try {
-                Helper.spinUpServer();
-                Helper.serverScheduler(RestCall.ipAddress);
+                Helper.spinUpServer();// starts up the server;
+                if (timeline == null){
+                    timeline = Helper.serverScheduler(RestCall.ipAddress); //schedule up requests to the server
+                }
+                timeline.play(); // start timeline of scheduled server requests
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
-        //start server Thread
-        serverThread.start();
-        //change scene
-        sceneChange(homePane, serverPane);
-
+        serverThread.start(); //start server Thread
+        sceneChange(homePane, serverPane);   //change scene
     }
 
-    // change scenes
+    // change scenes with fade effects
     private void sceneChange(Node oldScene, Node newScene) {
         FadeOut fadeOut = new FadeOut(oldScene);
         fadeOut.setSpeed(2.0);
