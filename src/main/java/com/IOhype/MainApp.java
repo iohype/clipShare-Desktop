@@ -2,6 +2,7 @@ package com.IOhype;
 
 import com.IOhype.controllers.ConnectionTestController;
 import javafx.application.Application;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -47,13 +48,15 @@ public class MainApp extends Application {
         String fxmlLocation = "/fxml/infoScene.fxml";
         loader.setLocation(MainApp.class.getResource(fxmlLocation));
         AnchorPane root = loader.load();
+
         Stage stage = new Stage();
         stage.initStyle(StageStyle.UNDECORATED);
+        stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Welcome");
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
-
+        stage.setOnCloseRequest(Event::consume); // prevent window from closing from windows event
         return stage;
     }
 

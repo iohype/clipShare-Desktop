@@ -84,7 +84,7 @@ public class WelcomeSceneController implements Initializable {
         serverName_server.setText(null);
         ipAddress_server.setText(null);
         connectToHostBtn.setDisable(true);
-        connectToHostBtn.setDisable(true);
+        openAsHostBtn.setDisable(true);
         timeline = null;
 
         //bind labels to clip text
@@ -101,7 +101,7 @@ public class WelcomeSceneController implements Initializable {
                 MainApp.infoStage().showAndWait();
                 stackPane.setEffect(null);
 
-                //perform heavy tasks
+                //perform heavy tasks such as getting network connection info
                 Platform.runLater(() -> {
                     try {
                         inetAddress = Helper.getSystemNetworkConfig();
@@ -109,7 +109,7 @@ public class WelcomeSceneController implements Initializable {
                         serverName_server.setText(inetAddress.getCanonicalHostName());
                         ipAddress_server.setText(inetAddress.getHostAddress());
                         connectToHostBtn.setDisable(false);
-                        connectToHostBtn.setDisable(false);
+                        openAsHostBtn.setDisable(false);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
