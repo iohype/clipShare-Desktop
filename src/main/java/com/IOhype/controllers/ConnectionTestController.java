@@ -41,6 +41,14 @@ public class ConnectionTestController implements Initializable {
             this.reply = false;
             closeBtn.getScene().getWindow().hide();
         } );
+
+        ipAddressField.setOnKeyTyped( event -> {
+            String ch = event.getCharacter();
+            char CH = ch.charAt( 0 );
+            if (Character.isLetter( CH )) {
+                event.consume();
+            }
+        } );
     }
 
     @FXML

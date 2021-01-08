@@ -4,17 +4,17 @@
     -fx-background-color: #ffffff;
 }
 .primary-color{
-    -fx-background-color: #37474f;
+    -fx-background-color: #1e417b;
 }
 .primary-btn{
-    -fx-background-color: #546e7a;
+    -fx-background-color: #1e417b;
     -fx-background-radius: 5px;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
     -fx-text-fill: white;
 }
 .outline-btn{
-    -fx-border-color: #546e7a;
+    -fx-border-color: #1e417b;
     -fx-border-radius: 5px;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
@@ -29,13 +29,23 @@
 }
 
 .fields:hover{
-    -fx-border-color:  #546e7a;
+    -fx-border-color: #8fcae5;
+    -fx-border-width: 2px;
 }
 
 .fields:focused{
-    -fx-border-color:  #546e7a;
+    -fx-border-color: #8fcae5;
+    -fx-border-width: 2px;
 }
-
+.closeBtn{
+    -fx-background-color: white;
+}
+.closeBtn:pressed{
+    -fx-background-color: blue;
+}
 .closeBtn:hover{
     -fx-background-color: red;
+}
+.minimizeBtn:hover{
+    -fx-background-color: #eeeeee;
 }

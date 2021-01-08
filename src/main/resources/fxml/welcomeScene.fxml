@@ -17,17 +17,26 @@
    <children>
       <BorderPane layoutX="261.0" layoutY="163.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
-            <HBox alignment="CENTER_LEFT" prefHeight="44.0" prefWidth="721.0" BorderPane.alignment="CENTER">
+            <HBox fx:id="titleBar" alignment="CENTER_LEFT" prefHeight="44.0" prefWidth="721.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label prefHeight="19.0" prefWidth="660.0" text="Clipshare">
+                  <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label prefHeight="19.0" prefWidth="660.0" text="Clipshare">
+                           <graphic>
+                              <FontAwesomeIconView fill="#1e417b" glyphName="CLIPBOARD" size="14" text="" />
+                           </graphic>
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <JFXButton fx:id="minimiseBtn" contentDisplay="GRAPHIC_ONLY" styleClass="minimizeBtn">
                      <graphic>
-                        <FontAwesomeIconView fill="#37474f" glyphName="CLIPBOARD" size="14" text="" />
+                        <MaterialDesignIconView glyphName="MINUS" size="18" />
                      </graphic>
-                     <font>
-                        <Font name="System Bold" size="13.0" />
-                     </font>
-                  </Label>
-                  <JFXButton fx:id="closeBtn" contentDisplay="GRAPHIC_ONLY" styleClass="closeBtn">
+                  </JFXButton>
+                  <JFXButton fx:id="closeBtn" contentDisplay="GRAPHIC_ONLY" layoutX="680.0" layoutY="19.0" styleClass="closeBtn">
                      <graphic>
                         <MaterialDesignIconView glyphName="WINDOW_CLOSE" size="18" />
                      </graphic>
@@ -163,7 +172,7 @@
                   </VBox>
                   <VBox fx:id="homePane" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" styleClass="pane-color">
                      <children>
-                        <FontAwesomeIconView fill="#546e7a" glyphName="CLIPBOARD" size="50">
+                        <FontAwesomeIconView fill="#1e417b" glyphName="CLIPBOARD" size="50">
                            <VBox.margin>
                               <Insets bottom="10.0" />
                            </VBox.margin>
@@ -178,7 +187,7 @@
                               <Font size="13.0" />
                            </font>
                         </Label>
-                        <HBox alignment="CENTER" prefHeight="121.0" prefWidth="721.0" spacing="10.0">
+                        <HBox fx:id="navBtnPane" alignment="CENTER" prefHeight="121.0" prefWidth="721.0" spacing="10.0">
                            <children>
                               <JFXButton fx:id="openAsHostBtn" onAction="#HandleHostConnection" prefHeight="35.0" prefWidth="227.0" styleClass="primary-btn" text="Open as host" />
                               <JFXButton fx:id="connectToHostBtn" layoutX="257.0" layoutY="107.0" onAction="#HandleClientConnection" prefHeight="35.0" prefWidth="227.0" styleClass="outline-btn" text="Connect to host" />
@@ -192,7 +201,7 @@
          <bottom>
             <HBox alignment="TOP_RIGHT" prefHeight="21.0" prefWidth="721.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label text="©IOhype 2020" />
+                  <Label fx:id="footerTagLbl" text="©IOhype 2020" />
                </children>
                <padding>
                   <Insets bottom="3.0" left="10.0" right="10.0" />
