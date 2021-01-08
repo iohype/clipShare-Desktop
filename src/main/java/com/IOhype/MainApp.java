@@ -1,6 +1,7 @@
 package com.IOhype;
 
 import com.IOhype.controllers.ConnectionTestController;
+import com.IOhype.util.Helper;
 import javafx.application.Application;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
@@ -26,6 +27,8 @@ public class MainApp extends Application {
     public void start(Stage stage) throws Exception {
         //show the welcome page as initial scene
         welcomePageStage(stage).show();
+//        Helper.spinUpServer();
+//        Helper.killServer();
     }
 
     public static Stage welcomePageStage(Stage stage) throws IOException {

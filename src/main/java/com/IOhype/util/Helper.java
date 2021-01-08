@@ -87,7 +87,14 @@ public class Helper {
 
     // kill the pbgopy server from running
     public static void killServer() throws IOException {
-        Process process = Runtime.getRuntime().exec("killall pbgopy");
+        Process process = null;
+        if (PlatformUtil.isWindows()){
+            process = Runtime.getRuntime().exec("taskkill /F /IM pbgopy.exe");
+        }
+        else if (PlatformUtil.isLinux()) {
+            process = Runtime.getRuntime().exec("killall pbgopy"); 
+        }
+        
 //        kill -9 `jps | grep "DataNode" | cut -d " " -f 1`
         printResults(process);
     }
