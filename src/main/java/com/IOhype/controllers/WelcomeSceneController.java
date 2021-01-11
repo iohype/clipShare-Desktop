@@ -82,6 +82,9 @@ public class WelcomeSceneController implements Initializable {
     @FXML
     private HBox navBtnPane;
 
+    @FXML
+    private Label settingsLbl;
+
     private Thread serverThread;
 
     private Thread clientThread;
@@ -115,15 +118,18 @@ public class WelcomeSceneController implements Initializable {
             stage.setIconified( true );
         } ); //action event to minimize window
 
-        titleBar.setOnMousePressed( e -> {
-            xOffset = e.getSceneX();
-            yOffset = e.getSceneY();
+        titleBar.setOnMousePressed( event -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
         } );
 
-        titleBar.setOnMouseDragged( e -> {
+        titleBar.setOnMouseDragged( event -> {
             Stage stage = (Stage) minimiseBtn.getScene().getWindow();
-            stage.setX( e.getScreenX() - xOffset );
-            stage.setY( e.getScreenY() - yOffset );
+            stage.setX( event.getScreenX() - xOffset );
+            stage.setY( event.getScreenY() - yOffset );
+        } );
+
+        settingsLbl.setOnMouseClicked( event -> {
         } );
 
         //show information about software usage

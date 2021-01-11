@@ -1,8 +1,12 @@
 /* Application wide styles */
 
 .pane-color{
-    -fx-background-color: #ffffff;
+    -fx-background-color: white;
 }
+.pane-border {
+    -fx-border-color: #e0e0e0;
+}
+
 .primary-color{
     -fx-background-color: #1e417b;
 }
@@ -11,14 +15,12 @@
     -fx-background-radius: 5px;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
-    -fx-text-fill: white;
 }
 .outline-btn{
     -fx-border-color: #1e417b;
     -fx-border-radius: 5px;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
-    -fx-text-fill: #424242;
 }
 
 .fields {
@@ -48,4 +50,28 @@
 }
 .minimizeBtn:hover{
     -fx-background-color: #eeeeee;
+}
+
+.text-dark{
+    -fx-text-fill: black;
+}
+
+.text-white{
+    -fx-text-fill: white;
+}
+
+.icon-fill{
+    -fx-Fill: #f6851f;
+}
+
+.label-tags:hover{
+    -fx-underline: true;
+}
+
+.windows-icon{
+    -fx-Fill: black;
+}
+
+.toggle-btn{
+    -jfx-toggle-color: #f6851f;
 }
