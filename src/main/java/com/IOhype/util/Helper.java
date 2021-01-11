@@ -1,5 +1,6 @@
 package com.IOhype.util;
 
+import com.IOhype.model.AppConfig;
 import com.sun.javafx.PlatformUtil;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -8,14 +9,13 @@ import javafx.application.Platform;
 import javafx.util.Duration;
 
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Properties;
 
 import static java.lang.System.out;
 
@@ -134,7 +134,7 @@ public class Helper {
         return timeline;
     }
 
-    //print process resultt o command line
+    //print process result of command line
     private static void printResults(Process process) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
         String line;
@@ -155,6 +155,23 @@ public class Helper {
             }
         }
         return letterFlag;
+    }
+
+    //get app config from config.properties
+    public static AppConfig getAppConfig() throws IOException {
+        Properties properties = new Properties();
+        properties.load(new FileInputStream(new File("").getAbsoluteFile() + "\\src\\main\\resources\\config.properties"));
+        return new AppConfig( Boolean.parseBoolean(properties.getProperty( "dark_mode" )),Boolean.parseBoolean(properties.getProperty( "beep" )), Integer.parseInt( properties.getProperty( "port" ) ) );
+    }
+
+    //set config properties
+    public static void setAppConfig(AppConfig appConfig) throws IOException {
+        Properties properties = new Properties();
+        properties.load(new FileInputStream(new File("").getAbsoluteFile() + "\\src\\main\\resources\\config.properties"));
+        properties.put( "dark_mode",String.valueOf(appConfig.isDark_mode()) );
+        properties.put( "beep",String.valueOf( appConfig.isBeep() ) );
+        properties.put( "port", String .valueOf( appConfig.getPort() ) );
+        properties.store( new FileOutputStream( new File("").getAbsoluteFile() + "\\src\\main\\resources\\config.properties" ),"Updated on "+ LocalDate.now() );
     }
 
 

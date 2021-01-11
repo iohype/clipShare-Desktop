@@ -1,6 +1,7 @@
 package com.IOhype;
 
 import com.IOhype.controllers.ConnectionTestController;
+import com.IOhype.model.AppConfig;
 import com.IOhype.util.Helper;
 import javafx.application.Application;
 import javafx.event.Event;
@@ -25,10 +26,9 @@ public class MainApp extends Application {
     }
 
     public void start(Stage stage) throws Exception {
-        //show the welcome page as initial scene
+//        show the welcome page as initial scene
         welcomePageStage(stage).show();
-//        Helper.spinUpServer();
-//        Helper.killServer();
+
     }
 
     public static Stage welcomePageStage(Stage stage) throws IOException {
@@ -81,5 +81,22 @@ public class MainApp extends Application {
         stage.showAndWait();
 
         return connectionTestController.getReply();
+    }
+
+    public static Stage settingsStage() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        String fxmlLocation = "/fxml/settingsScene.fxml";
+        loader.setLocation(MainApp.class.getResource(fxmlLocation));
+        AnchorPane root = loader.load();
+
+        Stage stage = new Stage();
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Application Configurations");
+
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+
+        return stage;
     }
 }

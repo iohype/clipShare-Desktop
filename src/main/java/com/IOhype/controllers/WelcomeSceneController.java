@@ -130,6 +130,14 @@ public class WelcomeSceneController implements Initializable {
         } );
 
         settingsLbl.setOnMouseClicked( event -> {
+            try {
+                BoxBlur blur = new BoxBlur( 7, 7, 7 );
+                stackPane.setEffect( blur );
+                MainApp.settingsStage().showAndWait();
+                stackPane.setEffect( null );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } );
 
         //show information about software usage
