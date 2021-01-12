@@ -2,6 +2,7 @@ package com.IOhype.controllers;
 
 import com.IOhype.model.AppConfig;
 import com.IOhype.util.Alerts;
+import com.IOhype.util.Constants;
 import com.IOhype.util.Helper;
 import com.IOhype.util.Session;
 import javafx.application.Platform;
@@ -62,12 +63,19 @@ public class SettingsSceneController implements Initializable {
 
     @FXML
     private void HandleSetToDefault(ActionEvent event) throws IOException {
+        /*
+        set session values of app config
+         */
         Session.appConfig.setBeep( false );
         Session.appConfig.setDark_mode( false );
-        Session.appConfig.setPort( 9090 );
-        AppConfig appConfig = new AppConfig( false, false, 9090 );
+        Session.appConfig.setPort( Constants.DEFAULT_PORT );
+        AppConfig appConfig = new AppConfig( false, false, Constants.DEFAULT_PORT );
         Helper.setAppConfig(appConfig); //set default config
-        alerts.Notification( "DEFAULT SET","Default configurations saved" );
+        alerts.Notification( "DEFAULT SET","Default configurations saved" ); //show alerts
+
+        portField.setText( String.valueOf( Session.appConfig.getPort() ) );
+        beepToggle.setSelected( Session.appConfig.isBeep() );
+        themeToggle.setSelected( Session.appConfig.isDark_mode() );
     }
 
     @FXML

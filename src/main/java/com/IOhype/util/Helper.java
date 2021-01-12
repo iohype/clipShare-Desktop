@@ -85,6 +85,23 @@ public class Helper {
 //        process.destroy();
     }
 
+    //start up pbgopy server
+    public static void spinUpServerOnPort() throws IOException {
+        Process process = null;
+        if (PlatformUtil.isWindows()) {
+            File file = new File(new File("").getAbsolutePath() + "\\");
+            System.out.println("Running on Windows");
+            process = Runtime.getRuntime().exec(new String[]{"cmd", "/c", ".\\pbgopy serve --port="+Session.appConfig.getPort()}, null, file);
+        } else if (PlatformUtil.isLinux()) {
+            File file = new File(new File("").getAbsolutePath() + "/");
+            System.out.println("Running on Linux");
+            process = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", "./pbgopy serve --port="+Session.appConfig.getPort()}, null, file);
+        }
+
+        assert process != null;
+//        process.destroy();
+    }
+
     // kill the pbgopy server from running
     public static void killServer() throws IOException {
         Process process = null;

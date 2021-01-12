@@ -31,7 +31,6 @@ public class ConnectionTestController implements Initializable {
 
     private Alerts alerts;
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         alerts = new Alerts();
