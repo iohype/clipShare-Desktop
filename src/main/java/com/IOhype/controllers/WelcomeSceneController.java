@@ -4,12 +4,15 @@ import animatefx.animation.FadeIn;
 import animatefx.animation.FadeOut;
 import animatefx.animation.Shake;
 import com.IOhype.MainApp;
+import com.IOhype.model.ClipProps;
 import com.IOhype.util.ClipboardService;
 import com.IOhype.util.Helper;
 import com.IOhype.util.RestCall;
+import com.IOhype.util.Session;
 import com.jfoenix.controls.JFXButton;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -89,8 +92,6 @@ public class WelcomeSceneController implements Initializable {
 
     private Thread clientThread;
 
-    private InetAddress inetAddress;
-
     private Timeline timeline;
 
     private double xOffset, yOffset;
@@ -106,10 +107,6 @@ public class WelcomeSceneController implements Initializable {
         openAsHostBtn.setDisable( true );
         timeline = null;
         footerTagLbl.setText( "©IOhype " + LocalDate.now().getYear() );
-
-        //bind labels to clip text
-        this.clipboard_server.textProperty().bind( ClipboardService.clipString );
-        this.cllipboard_client.textProperty().bind( ClipboardService.clipString );
 
         closeBtn.setOnAction( event -> System.exit( 0 ) ); // action event to close window
 
@@ -131,7 +128,7 @@ public class WelcomeSceneController implements Initializable {
 
         settingsLbl.setOnMouseClicked( event -> {
             try {
-                BoxBlur blur = new BoxBlur( 7, 7, 7 );
+                BoxBlur blur = new BoxBlur( 10, 10, 10 );
                 stackPane.setEffect( blur );
                 MainApp.settingsStage().showAndWait();
                 stackPane.setEffect( null );
@@ -151,13 +148,20 @@ public class WelcomeSceneController implements Initializable {
                 //perform heavy tasks such as getting network connection info
                 Platform.runLater( () -> {
                     try {
-                        inetAddress = Helper.getSystemNetworkConfig();
-                        assert inetAddress != null;
-                        serverName_server.setText( inetAddress.getCanonicalHostName() );
-                        ipAddress_server.setText( inetAddress.getHostAddress() );
-                        shakeAnimateNavPane();
+                        assert Session.inetAddress != null;
+                        Session.inetAddress = Helper.getSystemNetworkConfig();
+                        Session.clipProps = new ClipProps( new SimpleStringProperty(), 0, Session.inetAddress.getHostAddress() );
+                        Session.appConfig = Helper.getAppConfig();
+
+                        //bind labels to clip text
+                        this.clipboard_server.textProperty().bind( Session.clipProps.clipStringProperty() );
+                        this.cllipboard_client.textProperty().bind( Session.clipProps.clipStringProperty() );
+
+                        serverName_server.setText( Session.inetAddress.getCanonicalHostName() );
+                        ipAddress_server.setText( Session.inetAddress.getHostAddress() );
                         connectToHostBtn.setDisable( false );
                         openAsHostBtn.setDisable( false );
+                        shakeAnimateNavPane();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -183,7 +187,7 @@ public class WelcomeSceneController implements Initializable {
             clientThread = new Thread( () -> {
                 if (timeline == null) {
                     try {
-                        timeline = Helper.serverScheduler( RestCall.ipAddress );  // schedule requests from the server
+                        timeline = Helper.serverScheduler( Session.clipProps.getIpAddress() );  // schedule requests from the server
                         timeline.play(); // starts timeline
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -217,13 +221,13 @@ public class WelcomeSceneController implements Initializable {
 
     @FXML
     private void HandleHostConnection(ActionEvent event) throws IOException {
-        RestCall.ipAddress = inetAddress.getHostAddress();
+        Session.clipProps.setIpAddress( Session.inetAddress.getHostAddress());
         // initialise server thread
         serverThread = new Thread( () -> {
             try {
                 Helper.spinUpServer();// starts up the server;
                 if (timeline == null) {
-                    timeline = Helper.serverScheduler( RestCall.ipAddress ); //schedule up requests to the server
+                    timeline = Helper.serverScheduler( Session.clipProps.getIpAddress() ); //schedule up requests to the server
                 }
                 timeline.play(); // start timeline of scheduled server requests
             } catch (IOException e) {

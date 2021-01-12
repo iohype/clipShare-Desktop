@@ -3,6 +3,7 @@ package com.IOhype.controllers;
 import com.IOhype.util.Alerts;
 import com.IOhype.util.Helper;
 import com.IOhype.util.RestCall;
+import com.IOhype.util.Session;
 import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -53,8 +54,8 @@ public class ConnectionTestController implements Initializable {
 
     @FXML
     private void ProceedEvent(ActionEvent event) throws IOException {
-        RestCall.ipAddress = ipAddressField.getText().trim();
-        if (Helper.isServerReachable( RestCall.ipAddress, 9090 )) {
+        Session.clipProps.setIpAddress(ipAddressField.getText().trim());
+        if (Helper.isServerReachable( Session.clipProps.getIpAddress(), 9090 )) {
             this.reply = true;
             closeBtn.getScene().getWindow().hide();
         } else {

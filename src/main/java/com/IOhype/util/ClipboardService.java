@@ -2,18 +2,16 @@ package com.IOhype.util;
 
 
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
 
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.function.Consumer;
 
 public class ClipboardService implements ClipboardOwner, Runnable {
     private final Clipboard SYSTEM_CLIPBOARD = Toolkit.getDefaultToolkit().getSystemClipboard(); //get system clipboard
     private final Consumer<String> bufferConsumer;
-    public static SimpleStringProperty clipString = new SimpleStringProperty();
+
 
     public ClipboardService(Consumer<String> bufferConsumer) {
         this.bufferConsumer = bufferConsumer;
@@ -26,13 +24,16 @@ public class ClipboardService implements ClipboardOwner, Runnable {
                 Transferable contents = SYSTEM_CLIPBOARD.getContents( this );
                 getOwnership( contents );
                 String clip = (String) SYSTEM_CLIPBOARD.getData( DataFlavor.stringFlavor );
-                Platform.runLater( () -> clipString.set( clip ) );
-                System.out.println( "Copied: " + clipString.get() );
+                Platform.runLater( () -> Session.clipProps.setClipString( clip ) );
+                System.out.println( "Copied: " + Session.clipProps.getClipString() );
 
                 RestCall restCall = new RestCall();
-                System.out.println( restCall.putClipToServer( RestCall.ipAddress, clipString.get() ) ); // push to clip text to server
+                System.out.println( restCall.putClipToServer( Session.clipProps.getIpAddress(), Session.clipProps.getClipString() ) ); // push to clip text to server
 
-                Toolkit.getDefaultToolkit().beep();
+                if (Session.appConfig.isBeep()) {
+                    Toolkit.getDefaultToolkit().beep();
+                }
+
 
             } catch (UnsupportedFlavorException | IOException e) {
                 e.printStackTrace();

@@ -6,17 +6,12 @@ import java.io.IOException;
 
 public class RestCall {
 
-    private final String PORT_NUMBER = "9090";
-
-    public double serverTimestamp;
-
-    public static  String ipAddress = "";
-
     private final OkHttpClient client = new OkHttpClient();
 
     //get clipboard from server
     public String getServerClip(String ipAddress) throws IOException {
-        String getClipRoute = "http://"+ipAddress+":"+PORT_NUMBER+"/";
+        String portNumber = String.valueOf(Session.appConfig.getPort());
+        String getClipRoute = "http://"+ipAddress+":"+portNumber+"/";
         Request request = new Request.Builder()
                 .url( getClipRoute )
                 .build();
@@ -37,7 +32,8 @@ public class RestCall {
 
     //put clipboard to server
     public String putClipToServer(String ipAddress, String clipText) throws IOException {
-        String putClipRoute = "http://"+ipAddress+":"+PORT_NUMBER+"/";
+        String portNumber = String.valueOf(Session.appConfig.getPort());
+        String putClipRoute = "http://"+ipAddress+":"+portNumber+"/";
         MediaType mediaType = MediaType.parse( "text/x-markdown; charset=utf-8" );
         Request request = new Request.Builder()
                 .url( putClipRoute )
@@ -57,7 +53,8 @@ public class RestCall {
 
     //get clipboard from server
     public double getServerLastUpdatedTime(String ipAddress) throws IOException {
-        String getClipRoute = "http://"+ipAddress+":"+PORT_NUMBER+"/lastupdated";
+        String portNumber = String.valueOf(Session.appConfig.getPort());
+        String getClipRoute = "http://"+ipAddress+":"+portNumber+"/lastupdated";
         Request request = new Request.Builder()
                 .url( getClipRoute )
                 .build();

@@ -102,7 +102,8 @@ public class Helper {
     //automate request schedule to the server
     public static Timeline serverScheduler(String ipAddress) throws IOException {
         RestCall restCall = new RestCall();
-        restCall.serverTimestamp = restCall.getServerLastUpdatedTime(ipAddress); // get a copy of the current server timestamp
+
+        Session.clipProps.setServerTimeStamp(restCall.getServerLastUpdatedTime(ipAddress)); // get a copy of the current server timestamp
         ClipboardService clipboardService = new ClipboardService(out::println);
         EventQueue.invokeLater(clipboardService);
         clipboardService.ClipBoardListener(); //listen for clipboard changes
@@ -112,12 +113,12 @@ public class Helper {
                     try {
 
                         if (restCall.getServerLastUpdatedTime(ipAddress) != 0) { //check if timestamp is not set yet
-                            if (restCall.getServerLastUpdatedTime(ipAddress) > restCall.serverTimestamp) {
+                            if (restCall.getServerLastUpdatedTime(ipAddress) > Session.clipProps.getServerTimeStamp()) {
                                 clipboardService.setBuffer(restCall.getServerClip(ipAddress));
                                 String clip = restCall.getServerClip(ipAddress);
-                                Platform.runLater(() -> ClipboardService.clipString.set(clip)); //set clipboard content to show in UI
+                                Platform.runLater(() -> Session.clipProps.setClipString( clip )); //set clipboard content to show in UI
                                 out.println("Data fetched from server");
-                                restCall.serverTimestamp = restCall.getServerLastUpdatedTime(ipAddress); // reassign timestamp from server to device timestamp
+                               Session.clipProps.setServerTimeStamp( restCall.getServerLastUpdatedTime(ipAddress)); // reassign timestamp from server to device timestamp
                             } else {
                                 out.println("Data in server is recent");
                             }
