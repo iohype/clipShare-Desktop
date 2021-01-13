@@ -7,6 +7,11 @@
 .pane-color{
     -fx-background-color: white;
 }
+
+.pane-fade-color{
+    -fx-background-color: #eeeeee;
+}
+
 .pane-border {
     -fx-border-color: #e0e0e0;
 }
@@ -14,6 +19,7 @@
 .primary-color{
     -fx-background-color: #1e417b;
 }
+
 .primary-btn{
     -fx-background-color: #1e417b;
     -fx-background-radius: 10px;

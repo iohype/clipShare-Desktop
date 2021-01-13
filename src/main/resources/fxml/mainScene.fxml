@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="543.0" prefWidth="721.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.IOhype.controllers.MainSceneController">
+<AnchorPane fx:id="root" prefHeight="543.0" prefWidth="721.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.IOhype.controllers.MainSceneController">
    <children>
       <BorderPane layoutX="261.0" layoutY="163.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -63,10 +63,10 @@
          <center>
             <StackPane fx:id="stackPane" BorderPane.alignment="CENTER">
                <children>
-                  <StackPane styleClass="pane-color">
+                  <StackPane fx:id="clientConnectionPane" styleClass="pane-color">
                      <children>
                         <VBox opacity="0.04" prefHeight="200.0" prefWidth="100.0" styleClass="bodybg" />
-                        <VBox fx:id="clientConnectionPane" prefHeight="200.0" prefWidth="100.0">
+                        <VBox prefHeight="200.0" prefWidth="100.0">
                            <padding>
                               <Insets bottom="15.0" left="60.0" right="60.0" top="15.0" />
                            </padding>
@@ -144,7 +144,7 @@
                               </HBox>
                               <VBox alignment="CENTER" prefHeight="193.0" prefWidth="599.0" spacing="20.0">
                                  <children>
-                                    <Label fx:id="cllipboard_client" alignment="CENTER" prefHeight="192.0" prefWidth="607.0" styleClass="clip-board-label" text="Clipboard content" textAlignment="CENTER" wrapText="true">
+                                    <Label fx:id="clipboard_client" alignment="CENTER" prefHeight="192.0" prefWidth="607.0" styleClass="clip-board-label" text="Clipboard content" textAlignment="CENTER" wrapText="true">
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding>

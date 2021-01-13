@@ -16,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.effect.BoxBlur;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -29,6 +30,9 @@ import java.util.ResourceBundle;
 
 public class MainSceneController implements Initializable {
     @FXML
+    private AnchorPane root;
+
+    @FXML
     private JFXButton closeBtn;
 
     @FXML
@@ -38,13 +42,13 @@ public class MainSceneController implements Initializable {
     private HBox titleBar;
 
     @FXML
-    private VBox clientConnectionPane;
+    private StackPane clientConnectionPane;
 
     @FXML
     private Label serverNameLbl_client;
 
     @FXML
-    private Label cllipboard_client;
+    private Label clipboard_client;
 
     @FXML
     private Label ipAddress_client;
@@ -106,7 +110,7 @@ public class MainSceneController implements Initializable {
         connectToHostBtn.setDisable( true );
         openAsHostBtn.setDisable( true );
         timeline = null;
-        footerTagLbl.setText( "©IOhype " + LocalDate.now().getYear() );
+        footerTagLbl.setText( "IOhype " + LocalDate.now().getYear() );
 
         closeBtn.setOnAction( event -> System.exit( 0 ) ); // action event to close window
 
@@ -130,7 +134,15 @@ public class MainSceneController implements Initializable {
             try {
                 BoxBlur blur = new BoxBlur( 10, 10, 10 );
                 stackPane.setEffect( blur );
+                root.getStyleClass().add( "pane-fade-color" );
+                homePane.getStyleClass().add( "pane-fade-color" );
+                clientConnectionPane.getStyleClass().add( "pane-fade-color" );
+                serverPane.getStyleClass().add( "pane-fade-color" );
                 MainApp.settingsStage().showAndWait();
+                root.getStyleClass().remove( "pane-fade-color" );
+                homePane.getStyleClass().remove( "pane-fade-color" );
+                clientConnectionPane.getStyleClass().remove( "pane-fade-color" );
+                serverPane.getStyleClass().remove( "pane-fade-color" );
                 stackPane.setEffect( null );
             } catch (IOException e) {
                 e.printStackTrace();
@@ -142,7 +154,11 @@ public class MainSceneController implements Initializable {
             try {
                 BoxBlur blur = new BoxBlur( 6, 6, 6 );
                 stackPane.setEffect( blur );
+                root.getStyleClass().add( "pane-fade-color" );
+                homePane.getStyleClass().add( "pane-fade-color" );
                 MainApp.infoStage().showAndWait();
+                root.getStyleClass().remove( "pane-fade-color" );
+                homePane.getStyleClass().remove( "pane-fade-color" );
                 stackPane.setEffect( null );
 
                 //perform heavy tasks such as getting network connection info
@@ -155,7 +171,7 @@ public class MainSceneController implements Initializable {
 
                         //bind labels to clip text
                         this.clipboard_server.textProperty().bind( Session.clipProps.clipStringProperty() );
-                        this.cllipboard_client.textProperty().bind( Session.clipProps.clipStringProperty() );
+                        this.clipboard_client.textProperty().bind( Session.clipProps.clipStringProperty() );
 
                         ipAddress_server.setText( Session.inetAddress.getHostAddress() );
                         connectToHostBtn.setDisable( false );
@@ -178,10 +194,15 @@ public class MainSceneController implements Initializable {
     private void HandleClientConnection(ActionEvent event) throws IOException {
         BoxBlur blur = new BoxBlur( 7, 7, 7 );
         stackPane.setEffect( blur );
+        root.getStyleClass().add( "pane-fade-color" );
+        homePane.getStyleClass().add( "pane-fade-color" );
         boolean result = MainApp.connectionTestStage();
+        root.getStyleClass().remove( "pane-fade-color" );
+        homePane.getStyleClass().remove( "pane-fade-color" );
         stackPane.setEffect( null );
 
         if (result) {
+            Session.edit_port = false;
             sceneChange( homePane, clientConnectionPane );
             ipAddress_client.setText( Session.clipProps.getIpAddress() );
             clientThread = new Thread( () -> {
@@ -202,6 +223,7 @@ public class MainSceneController implements Initializable {
 
     @FXML
     private void HandleDisconnectServerConnect(ActionEvent event) throws IOException {
+        Session.edit_port = true;
         timeline.stop(); //stop the timeline from executing the keyframe action
         Helper.killServer(); //kill the pbgopy server from receiving requests
         serverThread.interrupt(); //stop the server thread from handling the server actions
@@ -212,6 +234,7 @@ public class MainSceneController implements Initializable {
 
     @FXML
     private void HandleDisconnectClientConnect(ActionEvent event) {
+        Session.edit_port = true;
         timeline.stop(); //stop the timeline from executing the keyframe action
         clientThread.interrupt(); // stop the thread handling the client actions
         clientThread = null;
@@ -223,6 +246,7 @@ public class MainSceneController implements Initializable {
     private void HandleHostConnection(ActionEvent event) throws IOException {
         Session.clipProps.setIpAddress( Session.inetAddress.getHostAddress());
         port_serverLbl.setText( String.valueOf( Session.appConfig.getPort() ) );
+        Session.edit_port = false;
         // initialise server thread
         serverThread = new Thread( () -> {
             try {

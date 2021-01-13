@@ -17,35 +17,16 @@ public class InfoSceneController implements Initializable {
     @FXML
     private JFXButton proceedBtn;
 
-    private final int MAX_TRIAL = 3; // trial count of times permitted to close system if network not found
-
-    private int trialCount; // keep count of times trying to proceed without network
-
     private Alerts alerts;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //initialise values to variables
-        trialCount = 0;
         alerts = new Alerts();
 
         // set button actions
         closeBtn.setOnAction(event -> {
-            try {
-                if (Helper.getSystemNetworkConfig() == null) {
-                    if (trialCount < MAX_TRIAL) {
-                        alerts.Notification("NETWORK NOT FOUND", "Ensure device is connected to a network");
-                        trialCount++;
-                    } else {
-                        System.exit(0);
-                    }
-                } else {
-                    closeBtn.getScene().getWindow().hide();
-                }
-            } catch (SocketException e) {
-                e.printStackTrace();
-            }
-
+            System.exit(0); // exit the a
         });
 
         proceedBtn.setOnAction(e -> Platform.runLater(() -> {

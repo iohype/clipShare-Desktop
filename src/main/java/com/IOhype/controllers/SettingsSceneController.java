@@ -46,7 +46,32 @@ public class SettingsSceneController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         alerts = new Alerts(); // initialize alerts
 
+        portField.setOnKeyTyped( event -> {
+            String ch = event.getCharacter();
+            char CH = ch.charAt( 0 );
+            if (!Character.isDigit( CH )) {
+                event.consume();
+            }
+        } );
         closeBtn.setOnAction( event -> closeBtn.getScene().getWindow().hide() );
+
+        themeToggle.setOnAction( event -> {
+            if (themeToggle.isSelected()){
+                themeToggle.setText( "Dark Theme" );
+            }
+           else {
+               themeToggle.setText( "Light Theme" );
+            }
+        } );
+
+        beepToggle.setOnAction( event -> {
+            if (beepToggle.isSelected()){
+                beepToggle.setText( "Beep" );
+            }
+            else {
+                beepToggle.setText( "Mute" );
+            }
+        } );
 
         Platform.runLater( () -> {
             try {
@@ -58,6 +83,16 @@ public class SettingsSceneController implements Initializable {
                 e.printStackTrace();
             }
         } );
+
+        //initialize fields based
+        if (Session.edit_port){
+            portField.setEditable( true );
+            defaultSettingsBtn.setDisable( false );
+        }
+        else {
+            portField.setEditable( false );
+            defaultSettingsBtn.setDisable( true );
+        }
 
     }
 
@@ -88,11 +123,16 @@ public class SettingsSceneController implements Initializable {
         }
         else {
             String port = portField.getText();
-            Session.appConfig.setBeep( beep );
-            Session.appConfig.setDark_mode( dark_mode );
-            Session.appConfig.setPort( Integer.parseInt( port ) );
-            Helper.setAppConfig( Session.appConfig ); // set app config to values selected
-            alerts.Notification( "CONFIGURATION UPDATED","App configurations updated" );
+            if ((Integer.parseInt( port ) > Constants.MAX_PORT) || (Integer.parseInt( port ) <= Constants.MIN_PORT)){
+                alerts.Notification( "INVALID PORT","RANGE OF PORT IS "+Constants.MIN_PORT+1+" - "+Constants.MAX_PORT );
+            }
+            else {
+                Session.appConfig.setBeep( beep );
+                Session.appConfig.setDark_mode( dark_mode );
+                Session.appConfig.setPort( Integer.parseInt( port ) );
+                Helper.setAppConfig( Session.appConfig ); // set app config to values selected
+                alerts.Notification( "CONFIGURATION UPDATED", "App configurations updated" );
+            }
         }
     }
 
