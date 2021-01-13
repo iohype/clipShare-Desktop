@@ -47,13 +47,14 @@ public class MainSceneController implements Initializable {
     private Label cllipboard_client;
 
     @FXML
+    private Label ipAddress_client;
+
+    @FXML
     private JFXButton disconnectBtn;
 
     @FXML
-    private VBox serverPane;
+    private StackPane serverPane;
 
-    @FXML
-    private Label serverName_server;
 
     @FXML
     private Label ipAddress_server;
@@ -62,10 +63,13 @@ public class MainSceneController implements Initializable {
     private Label clipboard_server;
 
     @FXML
+    private Label port_serverLbl;
+
+    @FXML
     private JFXButton stopServerConnection;
 
     @FXML
-    private VBox homePane;
+    private StackPane homePane;
 
     @FXML
     private JFXButton openAsHostBtn;
@@ -80,7 +84,7 @@ public class MainSceneController implements Initializable {
     private Label footerTagLbl;
 
     @FXML
-    private HBox navBtnPane;
+    private VBox navBtnPane;
 
     @FXML
     private Label settingsLbl;
@@ -98,7 +102,6 @@ public class MainSceneController implements Initializable {
         //initialize UI content
         serverPane.setOpacity( 0 );
         clientConnectionPane.setOpacity( 0 );
-        serverName_server.setText( null );
         ipAddress_server.setText( null );
         connectToHostBtn.setDisable( true );
         openAsHostBtn.setDisable( true );
@@ -147,14 +150,13 @@ public class MainSceneController implements Initializable {
                     try {
                         assert Session.inetAddress != null;
                         Session.inetAddress = Helper.getSystemNetworkConfig();
-                        Session.clipProps = new ClipProps( new SimpleStringProperty(), 0, Session.inetAddress.getHostAddress() );
+                        Session.clipProps = new ClipProps( new SimpleStringProperty("Clipboard data"), 0, Session.inetAddress.getHostAddress() );
                         Session.appConfig = Helper.getAppConfig();
 
                         //bind labels to clip text
                         this.clipboard_server.textProperty().bind( Session.clipProps.clipStringProperty() );
                         this.cllipboard_client.textProperty().bind( Session.clipProps.clipStringProperty() );
 
-                        serverName_server.setText( Session.inetAddress.getCanonicalHostName() );
                         ipAddress_server.setText( Session.inetAddress.getHostAddress() );
                         connectToHostBtn.setDisable( false );
                         openAsHostBtn.setDisable( false );
@@ -181,6 +183,7 @@ public class MainSceneController implements Initializable {
 
         if (result) {
             sceneChange( homePane, clientConnectionPane );
+            ipAddress_client.setText( Session.clipProps.getIpAddress() );
             clientThread = new Thread( () -> {
                 if (timeline == null) {
                     try {
@@ -219,6 +222,7 @@ public class MainSceneController implements Initializable {
     @FXML
     private void HandleHostConnection(ActionEvent event) throws IOException {
         Session.clipProps.setIpAddress( Session.inetAddress.getHostAddress());
+        port_serverLbl.setText( String.valueOf( Session.appConfig.getPort() ) );
         // initialise server thread
         serverThread = new Thread( () -> {
             try {

@@ -1,8 +1,6 @@
 package com.IOhype;
 
 import com.IOhype.controllers.ConnectionTestController;
-import com.IOhype.model.AppConfig;
-import com.IOhype.util.Helper;
 import javafx.application.Application;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
@@ -27,13 +25,13 @@ public class MainApp extends Application {
 
     public void start(Stage stage) throws Exception {
 //        show the welcome page as initial scene
-        welcomePageStage(stage).show();
+        mainPageStage(stage).show();
 
     }
 
-    public static Stage welcomePageStage(Stage stage) throws IOException {
+    public static Stage mainPageStage(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        String fxmlLocation = "/fxml/welcomeScene.fxml";
+        String fxmlLocation = "/fxml/mainScene.fxml";
         loader.setLocation(MainApp.class.getResource(fxmlLocation));
         Parent root = loader.load();
 

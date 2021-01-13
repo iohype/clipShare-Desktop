@@ -1,4 +1,8 @@
 /* Application wide styles */
+.bodybg{
+    -fx-background-image: url("../images/logo.png");
+    -fx-background-size: 100% 100%;
+}
 
 .pane-color{
     -fx-background-color: white;
@@ -12,13 +16,23 @@
 }
 .primary-btn{
     -fx-background-color: #1e417b;
-    -fx-background-radius: 5px;
+    -fx-background-radius: 10px;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
 }
+
+.special-btn{
+    -fx-background-color: #8fcae5;
+    -fx-border-color: #f6851f;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
 .outline-btn{
     -fx-border-color: #1e417b;
-    -fx-border-radius: 5px;
+    -fx-border-radius: 10px;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
 }
@@ -28,23 +42,30 @@
     -fx-border-color: #e0e0e0;
     -fx-background-radius: 10px;
     -fx-border-radius: 10px;
+    -fx-border-width: 1px;
 }
 
 .fields:hover{
     -fx-border-color: #8fcae5;
-    -fx-border-width: 2px;
+    -fx-border-width: 1px;
 }
 
 .fields:focused{
     -fx-border-color: #8fcae5;
-    -fx-border-width: 2px;
+    -fx-border-width: 1px;
 }
-.closeBtn{
-    -fx-background-color: white;
+
+.clip-board-label{
+    -fx-background-color: #fafafa;
+    -fx-border-color: #8fcae5;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
 }
+
 .closeBtn:pressed{
     -fx-background-color: blue;
 }
+
 .closeBtn:hover{
     -fx-background-color: red;
 }
@@ -58,6 +79,14 @@
 
 .text-white{
     -fx-text-fill: white;
+}
+
+.text-blue{
+    -fx-text-fill: #1e417b;
+}
+
+.text-semi-white {
+    -fx-text-fill: #888888;
 }
 
 .icon-fill{
@@ -74,4 +103,8 @@
 
 .toggle-btn{
     -jfx-toggle-color: #f6851f;
+}
+
+.text-bold{
+    -fx-font-weight: BOLD;
 }

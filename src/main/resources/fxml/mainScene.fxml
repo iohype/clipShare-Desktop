@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="543.0" prefWidth="721.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.IOhype.controllers.MainSceneController">
+   <children>
+      <BorderPane layoutX="261.0" layoutY="163.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <HBox fx:id="titleBar" alignment="CENTER_LEFT" prefHeight="44.0" prefWidth="719.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="15.0" prefWidth="631.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label graphicTextGap="0.0" prefHeight="21.0" text="ClipShare">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/logo.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <styleClass>
+                              <String fx:value="text-blue" />
+                              <String fx:value="text-bold" />
+                           </styleClass>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <JFXButton fx:id="minimiseBtn" contentDisplay="GRAPHIC_ONLY" styleClass="minimizeBtn">
+                     <graphic>
+                        <MaterialDesignIconView glyphName="MINUS" size="18" styleClass="windows-icon" />
+                     </graphic>
+                  </JFXButton>
+                  <JFXButton fx:id="closeBtn" contentDisplay="GRAPHIC_ONLY" layoutX="680.0" layoutY="19.0" styleClass="closeBtn">
+                     <graphic>
+                        <MaterialDesignIconView glyphName="WINDOW_CLOSE" size="18" styleClass="windows-icon" />
+                     </graphic>
+                  </JFXButton>
+               </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </HBox>
+         </top>
+         <center>
+            <StackPane fx:id="stackPane" BorderPane.alignment="CENTER">
+               <children>
+                  <StackPane styleClass="pane-color">
+                     <children>
+                        <VBox opacity="0.04" prefHeight="200.0" prefWidth="100.0" styleClass="bodybg" />
+                        <VBox fx:id="clientConnectionPane" prefHeight="200.0" prefWidth="100.0">
+                           <padding>
+                              <Insets bottom="15.0" left="60.0" right="60.0" top="15.0" />
+                           </padding>
+                           <children>
+                              <Label styleClass="text-semi-white" text="Keep your device on the same" wrapText="true">
+                                 <font>
+                                    <Font name="System Italic" size="13.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="30.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <HBox>
+                                 <children>
+                                    <Label styleClass="text-semi-white" text="network with the">
+                                       <font>
+                                          <Font name="System Italic" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="serverNameLbl_client" layoutX="10.0" layoutY="10.0" text="ClipShare" textFill="RED">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets left="3.0" />
+                                       </HBox.margin>
+                                       <styleClass>
+                                          <String fx:value="text-blue" />
+                                          <String fx:value="text-bold" />
+                                       </styleClass>
+                                    </Label>
+                                    <Label layoutX="10.0" layoutY="10.0" styleClass="text-semi-white" text="host">
+                                       <font>
+                                          <Font name="System Italic" size="13.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="5.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="39.0" prefWidth="599.0">
+                                 <VBox.margin>
+                                    <Insets top="20.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <VBox>
+                                       <children>
+                                          <Label styleClass="text-dark" text="Connected to" wrapText="true">
+                                             <font>
+                                                <Font size="13.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="ipAddress_client" text="192.168.43.2020">
+                                             <font>
+                                                <Font name="System Bold" size="17.0" />
+                                             </font>
+                                             <styleClass>
+                                                <String fx:value="text-blue" />
+                                                <String fx:value="text-bold" />
+                                             </styleClass>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <JFXButton fx:id="disconnectBtn" contentDisplay="RIGHT" onAction="#HandleDisconnectClientConnect" prefHeight="35.0" prefWidth="187.0" styleClass="primary-btn" text="Disconnect" textFill="WHITE">
+                                             <font>
+                                                <Font name="System Bold" size="13.0" />
+                                             </font>
+                                          </JFXButton>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+                              <VBox alignment="CENTER" prefHeight="193.0" prefWidth="599.0" spacing="20.0">
+                                 <children>
+                                    <Label fx:id="cllipboard_client" alignment="CENTER" prefHeight="192.0" prefWidth="607.0" styleClass="clip-board-label" text="Clipboard content" textAlignment="CENTER" wrapText="true">
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="20.0" />
+                                 </VBox.margin>
+                              </VBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="serverPane" styleClass="pane-color">
+                     <children>
+                        <VBox opacity="0.04" prefHeight="200.0" prefWidth="100.0" styleClass="bodybg" />
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <padding>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </padding>
+                           <children>
+                              <Label styleClass="text-semi-white" text="Connect your devices to this">
+                                 <VBox.margin>
+                                    <Insets left="60.0" top="20.0" />
+                                 </VBox.margin>
+                                 <font>
+                                    <Font name="System Italic" size="13.0" />
+                                 </font>
+                              </Label>
+                              <HBox>
+                                 <VBox.margin>
+                                    <Insets left="60.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Label text="ClipShare">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                       <styleClass>
+                                          <String fx:value="text-blue" />
+                                          <String fx:value="text-bold" />
+                                       </styleClass>
+                                    </Label>
+                                    <Label styleClass="text-semi-white" text="host via the address below">
+                                       <font>
+                                          <Font name="System Italic" size="13.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets left="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="20.0">
+                                 <VBox.margin>
+                                    <Insets left="60.0" right="60.0" top="20.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <VBox>
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                       <children>
+                                          <Label styleClass="text-bold" text="IP address" />
+                                          <Label fx:id="ipAddress_server" text="192.168.43.2020">
+                                             <font>
+                                                <Font name="System Bold" size="17.0" />
+                                             </font>
+                                             <styleClass>
+                                                <String fx:value="text-blue" />
+                                                <String fx:value="text-bold" />
+                                             </styleClass>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <VBox>
+                                       <HBox.margin>
+                                          <Insets left="5.0" />
+                                       </HBox.margin>
+                                       <children>
+                                          <Label styleClass="text-bold" text="Port" />
+                                          <Label fx:id="port_serverLbl" text="192.168.43.2020">
+                                             <font>
+                                                <Font name="System Bold" size="17.0" />
+                                             </font>
+                                             <styleClass>
+                                                <String fx:value="text-blue" />
+                                                <String fx:value="text-bold" />
+                                             </styleClass>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <JFXButton fx:id="stopServerConnection" contentDisplay="RIGHT" onAction="#HandleDisconnectServerConnect" prefHeight="35.0" prefWidth="187.0" styleClass="primary-btn" text="Stop Hosting" textFill="WHITE">
+                                             <font>
+                                                <Font name="System Bold" size="13.0" />
+                                             </font>
+                                          </JFXButton>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+                              <VBox alignment="CENTER" prefHeight="192.0" prefWidth="679.0" spacing="20.0">
+                                 <children>
+                                    <Label fx:id="clipboard_server" alignment="CENTER" prefHeight="202.0" prefWidth="559.0" styleClass="clip-board-label" text="Clipboard content" textAlignment="CENTER" wrapText="true">
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="60.0" right="60.0" top="30.0" />
+                                 </VBox.margin>
+                              </VBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="homePane" styleClass="pane-color">
+                     <children>
+                        <VBox opacity="0.04" prefHeight="200.0" prefWidth="100.0" styleClass="bodybg" />
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label prefHeight="39.0" prefWidth="197.0" styleClass="text-semi-white" text="Get your devices on the same network." wrapText="true">
+                                 <font>
+                                    <Font name="System Italic" size="13.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets left="50.0" top="40.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <HBox>
+                                 <VBox.margin>
+                                    <Insets left="50.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Label styleClass="text-semi-white" text="Start a ">
+                                       <font>
+                                          <Font name="System Italic" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="10.0" layoutY="10.0" text="ClipShare">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                       <styleClass>
+                                          <String fx:value="text-blue" />
+                                          <String fx:value="text-bold" />
+                                       </styleClass>
+                                    </Label>
+                                    <Label layoutX="10.0" layoutY="10.0" styleClass="text-semi-white" text="host on one of">
+                                       <font>
+                                          <Font name="System Italic" size="13.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="3.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <Label layoutX="80.0" layoutY="65.0" prefHeight="19.0" prefWidth="197.0" styleClass="text-semi-white" text="them, and connect the rest." wrapText="true">
+                                 <font>
+                                    <Font name="System Italic" size="13.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <VBox fx:id="navBtnPane" alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <Label styleClass="text-semi-white" text="Sync your clipboard" wrapText="true">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <JFXButton fx:id="connectToHostBtn" onAction="#HandleClientConnection" prefHeight="35.0" prefWidth="311.0" text="Connect to a host">
+                                       <styleClass>
+                                          <String fx:value="outline-btn" />
+                                          <String fx:value="text-blue" />
+                                       </styleClass>
+                                       <VBox.margin>
+                                          <Insets bottom="20.0" top="20.0" />
+                                       </VBox.margin>
+                                    </JFXButton>
+                                    <JFXButton fx:id="openAsHostBtn" onAction="#HandleHostConnection" prefHeight="35.0" prefWidth="311.0" styleClass="special-btn" text="Start a host" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </VBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </StackPane>
+               </children>
+            </StackPane>
+         </center>
+         <bottom>
+            <VBox BorderPane.alignment="CENTER">
+               <children>
+                  <HBox alignment="TOP_RIGHT" prefHeight="21.0" prefWidth="721.0">
+                     <children>
+                        <Label fx:id="settingsLbl" text="Settings">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                           <graphic>
+                              <MaterialDesignIconView glyphName="SETTINGS" size="15" styleClass="icon-fill" />
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <styleClass>
+                              <String fx:value="text-dark" />
+                              <String fx:value="label-tags" />
+                           </styleClass>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="3.0" left="10.0" right="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="21.0" prefWidth="721.0">
+                     <children>
+                        <Label fx:id="footerTagLbl" styleClass="text-dark" text="©IOhype 2020" />
+                     </children>
+                     <padding>
+                        <Insets bottom="3.0" left="10.0" right="10.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </VBox>
+         </bottom>
+      </BorderPane>
+   </children>
+   <styleClass>
+      <String fx:value="pane-color" />
+      <String fx:value="pane-border" />
+   </styleClass>
+</AnchorPane>
