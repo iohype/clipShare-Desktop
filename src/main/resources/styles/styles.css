@@ -1,4 +1,3 @@
-/* Application wide styles */
 .bodybg{
     -fx-background-image: url("../images/logo.png");
     -fx-background-size: 100% 100%;
@@ -6,6 +5,14 @@
 
 .pane-color{
     -fx-background-color: white;
+}
+
+.pane-background-radius {
+    -fx-background-radius: 20px;
+}
+
+.pane-border-radius {
+    -fx-border-radius: 20px;
 }
 
 .pane-fade-color{
@@ -17,30 +24,29 @@
 }
 
 .primary-color{
-    -fx-background-color: #1e417b;
+    -fx-background-color: #00427b;
 }
 
 .primary-btn{
-    -fx-background-color: #1e417b;
-    -fx-background-radius: 10px;
-    -fx-font-size: 13px;
-    -fx-font-weight: bold;
+    -fx-background-color: #00427b;
+    -fx-border-color: #00427b;
+    -fx-background-radius: 16px;
+    -fx-border-radius: 16px;
 }
 
 .special-btn{
-    -fx-background-color: #8fcae5;
-    -fx-border-color: #f6851f;
+    -fx-background-color: #77CCE6;
+    -fx-border-color: #888888;
     -fx-background-radius: 10px;
     -fx-border-radius: 10px;
-    -fx-font-size: 13px;
-    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
 }
 
 .outline-btn{
-    -fx-border-color: #1e417b;
+    -fx-background-color: transparent;
+    -fx-background-radius: 10px;
+    -fx-border-color: #00427b;
     -fx-border-radius: 10px;
-    -fx-font-size: 13px;
-    -fx-font-weight: bold;
 }
 
 .fields {
@@ -52,18 +58,18 @@
 }
 
 .fields:hover{
-    -fx-border-color: #8fcae5;
+    -fx-border-color: #77CCE6;
     -fx-border-width: 1px;
 }
 
 .fields:focused{
-    -fx-border-color: #8fcae5;
+    -fx-border-color: #77CCE6;
     -fx-border-width: 1px;
 }
 
 .clip-board-label{
     -fx-background-color: #fafafa;
-    -fx-border-color: #8fcae5;
+    -fx-border-color: #77CCE6;
     -fx-background-radius: 15px;
     -fx-border-radius: 15px;
 }
@@ -88,7 +94,7 @@
 }
 
 .text-blue{
-    -fx-text-fill: #1e417b;
+    -fx-text-fill: #00427b;
 }
 
 .text-semi-white {
@@ -104,13 +110,9 @@
 }
 
 .windows-icon{
-    -fx-Fill: black;
+    -fx-Fill: #888888;
 }
 
 .toggle-btn{
     -jfx-toggle-color: #f6851f;
-}
-
-.text-bold{
-    -fx-font-weight: BOLD;
 }

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 import static java.lang.System.out;
 
@@ -190,6 +191,13 @@ public class Helper {
         properties.put( "beep",String.valueOf( appConfig.isBeep() ) );
         properties.put( "port", String .valueOf( appConfig.getPort() ) );
         properties.store( new FileOutputStream( new File("").getAbsoluteFile() + "\\src\\main\\resources\\config.properties" ),"Updated on "+ LocalDate.now() );
+    }
+
+    public static boolean isIpAddress(String ipAddress){
+        final String zeroTo255 = "([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])";
+        final String IP_REGEXP = zeroTo255 + "\\." + zeroTo255 + "\\." + zeroTo255 + "\\." + zeroTo255;
+        final Pattern IP_PATTERN = Pattern.compile(IP_REGEXP);
+        return IP_PATTERN.matcher(ipAddress).matches();
     }
 
 

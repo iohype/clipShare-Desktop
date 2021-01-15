@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -70,11 +71,12 @@ public class MainApp extends Application {
         ConnectionTestController connectionTestController = loader.getController();
 
         Stage stage = new Stage();
-        stage.initStyle(StageStyle.UNDECORATED);
+        stage.initStyle(StageStyle.TRANSPARENT);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Connection Test");
 
         Scene scene = new Scene(root);
+        scene.setFill( null );
         stage.setScene(scene);
         stage.showAndWait();
 
@@ -93,6 +95,7 @@ public class MainApp extends Application {
         stage.setTitle("Application Configurations");
 
         Scene scene = new Scene(root);
+        scene.setFill( Color.TRANSPARENT );
         stage.setScene(scene);
 
         return stage;

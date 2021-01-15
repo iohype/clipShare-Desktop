@@ -5,7 +5,10 @@ import animatefx.animation.FadeOut;
 import animatefx.animation.Shake;
 import com.IOhype.MainApp;
 import com.IOhype.model.ClipProps;
-import com.IOhype.util.*;
+import com.IOhype.util.Alerts;
+import com.IOhype.util.Constants;
+import com.IOhype.util.Helper;
+import com.IOhype.util.Session;
 import com.jfoenix.controls.JFXButton;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -15,15 +18,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.InetAddress;
+import java.net.SocketException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
@@ -31,6 +36,9 @@ import java.util.ResourceBundle;
 public class MainSceneController implements Initializable {
     @FXML
     private AnchorPane root;
+
+    @FXML
+    private Label appTitleLbl;
 
     @FXML
     private JFXButton closeBtn;
@@ -45,9 +53,6 @@ public class MainSceneController implements Initializable {
     private StackPane clientConnectionPane;
 
     @FXML
-    private Label serverNameLbl_client;
-
-    @FXML
     private Label clipboard_client;
 
     @FXML
@@ -58,7 +63,6 @@ public class MainSceneController implements Initializable {
 
     @FXML
     private StackPane serverPane;
-
 
     @FXML
     private Label ipAddress_server;
@@ -93,6 +97,60 @@ public class MainSceneController implements Initializable {
     @FXML
     private Label settingsLbl;
 
+    @FXML
+    private Label fontLbl;
+
+    @FXML
+    private Label fontLbl1;
+
+    @FXML
+    private Label fontLbl2;
+
+    @FXML
+    private Label fontLbl3;
+
+    @FXML
+    private Label fontLbl4;
+
+    @FXML
+    private Label fontLbl5;
+
+    @FXML
+    private Label fontLbl6;
+
+    @FXML
+    private Label fontLbl7;
+
+    @FXML
+    private Label fontLbl8;
+
+    @FXML
+    private Label fontLbl9;
+
+    @FXML
+    private Label fontLbl10;
+
+    @FXML
+    private Label fontLbl11;
+
+    @FXML
+    private Label fontLbl12;
+
+    @FXML
+    private Label fontLbl13;
+
+    @FXML
+    private Label fontLbl14;
+
+    @FXML
+    private Label fontLbl15;
+
+    @FXML
+    private ProgressIndicator progressIndicator;
+
+    @FXML
+    private Label helpLbl;
+
     private Thread serverThread;
 
     private Thread clientThread;
@@ -101,16 +159,19 @@ public class MainSceneController implements Initializable {
 
     private double xOffset, yOffset;
 
+    private Alerts alerts;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //initialize UI content
         serverPane.setOpacity( 0 );
         clientConnectionPane.setOpacity( 0 );
         ipAddress_server.setText( null );
-        connectToHostBtn.setDisable( true );
-        openAsHostBtn.setDisable( true );
         timeline = null;
         footerTagLbl.setText( "IOhype " + LocalDate.now().getYear() );
+        setFont();
+        progressIndicator.setVisible( false );
+        alerts = new Alerts();
 
         closeBtn.setOnAction( event -> System.exit( 0 ) ); // action event to close window
 
@@ -150,43 +211,24 @@ public class MainSceneController implements Initializable {
         } );
 
         //show information about software usage
+        //perform heavy tasks such as getting network connection info
         Platform.runLater( () -> {
             try {
-                BoxBlur blur = new BoxBlur( 6, 6, 6 );
-                stackPane.setEffect( blur );
-                root.getStyleClass().add( "pane-fade-color" );
-                homePane.getStyleClass().add( "pane-fade-color" );
-                MainApp.infoStage().showAndWait();
-                root.getStyleClass().remove( "pane-fade-color" );
-                homePane.getStyleClass().remove( "pane-fade-color" );
-                stackPane.setEffect( null );
+                Session.clipProps = new ClipProps( new SimpleStringProperty( "Clipboard data" ), 0, null );
+                Session.appConfig = Helper.getAppConfig();
 
-                //perform heavy tasks such as getting network connection info
-                Platform.runLater( () -> {
-                    try {
-                        assert Session.inetAddress != null;
-                        Session.inetAddress = Helper.getSystemNetworkConfig();
-                        Session.clipProps = new ClipProps( new SimpleStringProperty("Clipboard data"), 0, Session.inetAddress.getHostAddress() );
-                        Session.appConfig = Helper.getAppConfig();
+                //bind labels to clip text
+                this.clipboard_server.textProperty().bind( Session.clipProps.clipStringProperty() );
+                this.clipboard_client.textProperty().bind( Session.clipProps.clipStringProperty() );
 
-                        //bind labels to clip text
-                        this.clipboard_server.textProperty().bind( Session.clipProps.clipStringProperty() );
-                        this.clipboard_client.textProperty().bind( Session.clipProps.clipStringProperty() );
 
-                        ipAddress_server.setText( Session.inetAddress.getHostAddress() );
-                        connectToHostBtn.setDisable( false );
-                        openAsHostBtn.setDisable( false );
-                        shakeAnimateNavPane();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                } );
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
         } );
+
 
     }
 
@@ -243,30 +285,51 @@ public class MainSceneController implements Initializable {
     }
 
     @FXML
-    private void HandleHostConnection(ActionEvent event) throws IOException {
-        Session.clipProps.setIpAddress( Session.inetAddress.getHostAddress());
-        port_serverLbl.setText( String.valueOf( Session.appConfig.getPort() ) );
-        Session.edit_port = false;
-        // initialise server thread
-        serverThread = new Thread( () -> {
+    private void HandleHostConnection(ActionEvent event) {
+        progressIndicator.setVisible( true );
+        Thread networkThread = new Thread( () -> {
             try {
-                if (Session.appConfig.getPort() == Constants.DEFAULT_PORT) {
-                    Helper.spinUpServer();
+                if (Helper.getSystemNetworkConfig() == null) {
+                    Platform.runLater( () -> {
+                        alerts.Notification( "NETWORK NOT FOUND", "Ensure device is connected to a network" );
+                        progressIndicator.setVisible( false );
+                    } );
                 } else {
-                    Helper.spinUpServerOnPort();
-                }// starts up the server;
+                    Session.inetAddress = Helper.getSystemNetworkConfig();
+                    Session.clipProps.setIpAddress( Session.inetAddress.getHostAddress() );
+                    Session.appConfig.setPort( Helper.getAppConfig().getPort() );
+                    Session.edit_port = false;
 
-
-                if (timeline == null) {
-                    timeline = Helper.serverScheduler( Session.clipProps.getIpAddress() ); //schedule up requests to the server
+                    // initialise server thread
+                    serverThread = new Thread( () -> {
+                        try {
+                            if (Session.appConfig.getPort() == Constants.DEFAULT_PORT) {
+                                Helper.spinUpServer();
+                            } else {
+                                Helper.spinUpServerOnPort();
+                            }// starts up the server;
+                            if (timeline == null) {
+                                timeline = Helper.serverScheduler( Session.clipProps.getIpAddress() ); //schedule up requests to the server
+                            }
+                            timeline.play(); // start timeline of scheduled server requests
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } );
+                    Platform.runLater( () -> {
+                        port_serverLbl.setText( String.valueOf( Session.appConfig.getPort() ) );
+                        ipAddress_server.setText( Session.inetAddress.getHostAddress() );
+                        sceneChange( homePane, serverPane );   //change scene
+                        progressIndicator.setVisible( false );
+                    } );
+                    serverThread.start(); //start server Thread
                 }
-                timeline.play(); // start timeline of scheduled server requests
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } );
-        serverThread.start(); //start server Thread
-        sceneChange( homePane, serverPane );   //change scene
+        networkThread.start();
+
     }
 
     // change scenes with fade effects
@@ -290,5 +353,45 @@ public class MainSceneController implements Initializable {
             shake.play();
         } );
 
+    }
+
+    private void setFont() {
+        Platform.runLater( () -> {
+            Font regularFontLarge = Font.loadFont( MainApp.class.getResourceAsStream( "/fonts/Montserrat/Montserrat-Regular.ttf" ), 15 );
+            Font regularFontSmall = Font.loadFont( MainApp.class.getResourceAsStream( "/fonts/Montserrat/Montserrat-Regular.ttf" ), 13 );
+            Font semiBoldSmall = Font.loadFont( MainApp.class.getResourceAsStream( "/fonts/Montserrat/Montserrat-SemiBold.ttf" ), 13 );
+            Font semiBoldLarge = Font.loadFont( MainApp.class.getResourceAsStream( "/fonts/Montserrat/Montserrat-SemiBold.ttf" ), 15 );
+            Font italicFontSmall = Font.loadFont( MainApp.class.getResourceAsStream( "/fonts/Montserrat/Montserrat-Italic.ttf" ), 13 );
+            Font italicFontLarge = Font.loadFont( MainApp.class.getResourceAsStream( "/fonts/Montserrat/Montserrat-Italic.ttf" ), 15 );
+            openAsHostBtn.setFont( semiBoldLarge );
+            connectToHostBtn.setFont( semiBoldLarge );
+            appTitleLbl.setFont( semiBoldSmall );
+            settingsLbl.setFont( semiBoldSmall );
+            helpLbl.setFont( semiBoldSmall );
+            footerTagLbl.setFont( regularFontSmall );
+            fontLbl.setFont( italicFontLarge );
+            fontLbl1.setFont( italicFontLarge );
+            fontLbl12.setFont( semiBoldLarge );
+            fontLbl3.setFont( italicFontLarge );
+            fontLbl4.setFont( italicFontLarge );
+            fontLbl5.setFont( regularFontLarge );
+            //server page
+            fontLbl11.setFont( italicFontLarge );
+            fontLbl2.setFont( semiBoldLarge );
+            fontLbl13.setFont( italicFontLarge );
+            fontLbl14.setFont( regularFontSmall );
+            fontLbl15.setFont( regularFontSmall );
+            ipAddress_server.setFont( semiBoldLarge );
+            port_serverLbl.setFont( semiBoldLarge );
+            clipboard_server.setFont( regularFontSmall );
+            //client page
+            fontLbl6.setFont( italicFontLarge );
+            fontLbl7.setFont( italicFontLarge );
+            fontLbl8.setFont( semiBoldLarge );
+            fontLbl9.setFont( italicFontLarge );
+            fontLbl10.setFont( regularFontSmall );
+            ipAddress_client.setFont( semiBoldLarge );
+            clipboard_client.setFont( regularFontSmall );
+        } );
     }
 }

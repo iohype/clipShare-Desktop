@@ -67,7 +67,7 @@
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </JFXToggleButton>
-                  <JFXToggleButton fx:id="beepToggle" prefHeight="58.0" prefWidth="172.0" text="Mute">
+                  <JFXToggleButton fx:id="beepToggle" prefHeight="58.0" prefWidth="172.0" text="Beep Cancelled">
                      <styleClass>
                         <String fx:value="toggle-btn" />
                         <String fx:value="text-dark" />

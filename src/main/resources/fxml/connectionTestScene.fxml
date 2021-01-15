@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -11,23 +12,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="317.0" prefWidth="379.0" style="-fx-border-color: #e0e0e0;" styleClass="pane-color" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.IOhype.controllers.ConnectionTestController">
+<AnchorPane prefHeight="382.0" prefWidth="379.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.IOhype.controllers.ConnectionTestController">
    <children>
       <BorderPane layoutX="-176.0" layoutY="-86.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <HBox alignment="CENTER_LEFT" prefHeight="44.0" prefWidth="721.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label prefHeight="19.0" prefWidth="660.0" text="Connection Test">
-                     <font>
-                        <Font name="System Bold" size="13.0" />
-                     </font>
-                     <graphic>
-                        <MaterialDesignIconView glyphName="WIFI" size="18" />
-                     </graphic>
-                  </Label>
                   <JFXButton fx:id="closeBtn" contentDisplay="GRAPHIC_ONLY" styleClass="closeBtn">
                      <graphic>
-                        <MaterialDesignIconView glyphName="WINDOW_CLOSE" size="18" />
+                        <MaterialDesignIconView glyphName="ARROW_LEFT" size="18" styleClass="windows-icon" />
                      </graphic>
                   </JFXButton>
                </children>
@@ -37,30 +30,73 @@
             </HBox>
          </top>
          <center>
-            <VBox prefHeight="200.0" prefWidth="100.0" spacing="30.0" BorderPane.alignment="CENTER">
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="25.0" BorderPane.alignment="CENTER">
                <padding>
                   <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
                </padding>
                <children>
-                  <Label prefHeight="65.0" prefWidth="347.0" text="Ensure you are connected on the same network with the host system. Ensure the host device is already running. The IP address of the host device is required to test the connection." wrapText="true" />
-                  <Label text="Host IP adddress">
+                  <HBox alignment="CENTER" fillHeight="false" prefHeight="18.0" prefWidth="347.0">
+                     <children>
+                        <VBox prefHeight="65.0" prefWidth="211.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label fx:id="fontLbl" text="Connect to your " wrapText="true" />
+                              <HBox>
+                                 <children>
+                                    <Label fx:id="fontLbl1" styleClass="text-blue" text="ClipShare" wrapText="true" />
+                                    <Label fx:id="fontLbl2" layoutX="10.0" layoutY="10.0" text="host" wrapText="true">
+                                       <padding>
+                                          <Insets left="3.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="20.0" prefWidth="30.0" styleClass="bodybg" />
+                     </children>
+                  </HBox>
+                  <Label fx:id="fontLbl3" text="Host IP adddress">
                      <VBox.margin>
-                        <Insets bottom="-30.0" />
+                        <Insets bottom="-25.0" top="5.0" />
                      </VBox.margin>
                      <font>
                         <Font size="11.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="ipAddressField" promptText="Enter host IP address" styleClass="fields" />
+                  <TextField fx:id="ipAddressField" prefHeight="35.0" promptText="e.g 192.168.001.002" styleClass="fields">
+                     <VBox.margin>
+                        <Insets bottom="-5.0" />
+                     </VBox.margin></TextField>
+                  <Label fx:id="fontLbl4" layoutX="25.0" layoutY="84.0" text="Host Port">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="-25.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="portField" layoutX="25.0" layoutY="100.0" prefHeight="35.0" promptText="Enter host IP address" styleClass="fields" />
                   <HBox alignment="CENTER" prefHeight="59.0" prefWidth="347.0" spacing="10.0">
                      <children>
-                        <JFXButton fx:id="testConnectionBtn" onAction="#TestConnectEvent" prefHeight="25.0" prefWidth="166.0" styleClass="primary-btn" text="Test Connection" />
-                        <JFXButton fx:id="proceedBtn" layoutX="101.0" layoutY="46.0" onAction="#ProceedEvent" prefHeight="25.0" prefWidth="166.0" styleClass="outline-btn" text="Proceed" />
+                        <JFXButton fx:id="testConnectionBtn" onAction="#ConnectServerEvent" prefHeight="40.0" prefWidth="166.0" text="Connect">
+                           <styleClass>
+                              <String fx:value="primary-btn" />
+                              <String fx:value="text-white" />
+                           </styleClass></JFXButton>
                      </children>
                   </HBox>
                </children>
             </VBox>
          </center>
+         <padding>
+            <Insets left="20.0" right="20.0" top="10.0" />
+         </padding>
       </BorderPane>
    </children>
+   <styleClass>
+      <String fx:value="pane-color" />
+      <String fx:value="pane-border" />
+      <String fx:value="pane-background-radius" />
+      <String fx:value="pane-border-radius" />
+   </styleClass>
 </AnchorPane>

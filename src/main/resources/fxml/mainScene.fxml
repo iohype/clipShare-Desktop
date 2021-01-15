@@ -6,6 +6,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" prefHeight="543.0" prefWidth="721.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.IOhype.controllers.MainSceneController">
+<AnchorPane fx:id="root" prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.IOhype.controllers.MainSceneController">
    <children>
       <BorderPane layoutX="261.0" layoutY="163.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -23,7 +24,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="15.0" prefWidth="631.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label graphicTextGap="0.0" prefHeight="21.0" text="ClipShare">
+                        <Label fx:id="appTitleLbl" graphicTextGap="0.0" prefHeight="21.0" styleClass="text-blue" text="ClipShare">
                            <font>
                               <Font size="13.0" />
                            </font>
@@ -34,10 +35,6 @@
                                  </image>
                               </ImageView>
                            </graphic>
-                           <styleClass>
-                              <String fx:value="text-blue" />
-                              <String fx:value="text-bold" />
-                           </styleClass>
                         </Label>
                      </children>
                   </HBox>
@@ -71,34 +68,30 @@
                               <Insets bottom="15.0" left="60.0" right="60.0" top="15.0" />
                            </padding>
                            <children>
-                              <Label styleClass="text-semi-white" text="Keep your device on the same" wrapText="true">
+                              <Label fx:id="fontLbl6" styleClass="text-semi-white" text="Keep your device on the same" wrapText="true">
                                  <font>
                                     <Font name="System Italic" size="13.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets top="30.0" />
+                                    <Insets left="40.0" top="30.0" />
                                  </VBox.margin>
                               </Label>
                               <HBox>
                                  <children>
-                                    <Label styleClass="text-semi-white" text="network with the">
+                                    <Label fx:id="fontLbl7" styleClass="text-semi-white" text="network with the">
                                        <font>
                                           <Font name="System Italic" size="13.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="serverNameLbl_client" layoutX="10.0" layoutY="10.0" text="ClipShare" textFill="RED">
+                                    <Label fx:id="fontLbl8" layoutX="10.0" layoutY="10.0" styleClass="text-blue" text="ClipShare" textFill="RED">
                                        <font>
-                                          <Font name="System Bold" size="13.0" />
+                                          <Font size="13.0" />
                                        </font>
                                        <HBox.margin>
                                           <Insets left="3.0" />
                                        </HBox.margin>
-                                       <styleClass>
-                                          <String fx:value="text-blue" />
-                                          <String fx:value="text-bold" />
-                                       </styleClass>
                                     </Label>
-                                    <Label layoutX="10.0" layoutY="10.0" styleClass="text-semi-white" text="host">
+                                    <Label fx:id="fontLbl9" layoutX="10.0" layoutY="10.0" styleClass="text-semi-white" text="host">
                                        <font>
                                           <Font name="System Italic" size="13.0" />
                                        </font>
@@ -107,15 +100,18 @@
                                        </padding>
                                     </Label>
                                  </children>
+                                 <VBox.margin>
+                                    <Insets left="40.0" />
+                                 </VBox.margin>
                               </HBox>
                               <HBox prefHeight="39.0" prefWidth="599.0">
                                  <VBox.margin>
-                                    <Insets top="20.0" />
+                                    <Insets left="40.0" right="40.0" top="20.0" />
                                  </VBox.margin>
                                  <children>
                                     <VBox>
                                        <children>
-                                          <Label styleClass="text-dark" text="Connected to" wrapText="true">
+                                          <Label fx:id="fontLbl10" styleClass="text-dark" text="Connected to" wrapText="true">
                                              <font>
                                                 <Font size="13.0" />
                                              </font>
@@ -142,9 +138,9 @@
                                     </HBox>
                                  </children>
                               </HBox>
-                              <VBox alignment="CENTER" prefHeight="193.0" prefWidth="599.0" spacing="20.0">
+                              <VBox alignment="CENTER" prefHeight="224.0" prefWidth="598.0" spacing="20.0">
                                  <children>
-                                    <Label fx:id="clipboard_client" alignment="CENTER" prefHeight="192.0" prefWidth="607.0" styleClass="clip-board-label" text="Clipboard content" textAlignment="CENTER" wrapText="true">
+                                    <Label fx:id="clipboard_client" alignment="CENTER" prefHeight="241.0" prefWidth="598.0" styleClass="clip-board-label" text="Clipboard content" textAlignment="CENTER" wrapText="true">
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding>
@@ -166,9 +162,9 @@
                               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                            </padding>
                            <children>
-                              <Label styleClass="text-semi-white" text="Connect your devices to this">
+                              <Label fx:id="fontLbl11" styleClass="text-semi-white" text="Connect your devices to this">
                                  <VBox.margin>
-                                    <Insets left="60.0" top="20.0" />
+                                    <Insets left="80.0" top="20.0" />
                                  </VBox.margin>
                                  <font>
                                     <Font name="System Italic" size="13.0" />
@@ -176,19 +172,15 @@
                               </Label>
                               <HBox>
                                  <VBox.margin>
-                                    <Insets left="60.0" />
+                                    <Insets left="80.0" />
                                  </VBox.margin>
                                  <children>
-                                    <Label text="ClipShare">
+                                    <Label fx:id="fontLbl12" styleClass="text-blue" text="ClipShare">
                                        <font>
                                           <Font size="13.0" />
                                        </font>
-                                       <styleClass>
-                                          <String fx:value="text-blue" />
-                                          <String fx:value="text-bold" />
-                                       </styleClass>
                                     </Label>
-                                    <Label styleClass="text-semi-white" text="host via the address below">
+                                    <Label fx:id="fontLbl13" styleClass="text-semi-white" text="host via the address below">
                                        <font>
                                           <Font name="System Italic" size="13.0" />
                                        </font>
@@ -200,7 +192,7 @@
                               </HBox>
                               <HBox alignment="CENTER_LEFT" spacing="20.0">
                                  <VBox.margin>
-                                    <Insets left="60.0" right="60.0" top="20.0" />
+                                    <Insets left="80.0" right="80.0" top="20.0" />
                                  </VBox.margin>
                                  <children>
                                     <VBox>
@@ -208,7 +200,7 @@
                                           <Insets />
                                        </HBox.margin>
                                        <children>
-                                          <Label styleClass="text-bold" text="IP address" />
+                                          <Label fx:id="fontLbl14" styleClass="text-bold" text="IP address" />
                                           <Label fx:id="ipAddress_server" text="192.168.43.2020">
                                              <font>
                                                 <Font name="System Bold" size="17.0" />
@@ -225,7 +217,7 @@
                                           <Insets left="5.0" />
                                        </HBox.margin>
                                        <children>
-                                          <Label styleClass="text-bold" text="Port" />
+                                          <Label fx:id="fontLbl15" styleClass="text-bold" text="Port" />
                                           <Label fx:id="port_serverLbl" text="192.168.43.2020">
                                              <font>
                                                 <Font name="System Bold" size="17.0" />
@@ -248,16 +240,16 @@
                                     </HBox>
                                  </children>
                               </HBox>
-                              <VBox alignment="CENTER" prefHeight="192.0" prefWidth="679.0" spacing="20.0">
+                              <VBox alignment="CENTER" prefHeight="222.0" prefWidth="598.0" spacing="20.0">
                                  <children>
-                                    <Label fx:id="clipboard_server" alignment="CENTER" prefHeight="202.0" prefWidth="559.0" styleClass="clip-board-label" text="Clipboard content" textAlignment="CENTER" wrapText="true">
+                                    <Label fx:id="clipboard_server" alignment="CENTER" prefHeight="222.0" prefWidth="598.0" styleClass="clip-board-label" text="Clipboard content" textAlignment="CENTER" wrapText="true">
                                        <padding>
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                        </padding>
                                     </Label>
                                  </children>
                                  <VBox.margin>
-                                    <Insets left="60.0" right="60.0" top="30.0" />
+                                    <Insets left="80.0" right="80.0" top="30.0" />
                                  </VBox.margin>
                               </VBox>
                            </children>
@@ -269,34 +261,34 @@
                         <VBox opacity="0.04" prefHeight="200.0" prefWidth="100.0" styleClass="bodybg" />
                         <VBox prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Label prefHeight="39.0" prefWidth="197.0" styleClass="text-semi-white" text="Get your devices on the same network." wrapText="true">
+                              <Label fx:id="fontLbl" prefWidth="197.0" text="Get your devices on the same network." wrapText="true">
                                  <font>
                                     <Font name="System Italic" size="13.0" />
                                  </font>
                                  <VBox.margin>
                                     <Insets left="50.0" top="40.0" />
                                  </VBox.margin>
+                                 <styleClass>
+                                    <String fx:value="text-semi-white" />
+                                    <String fx:value="font-regular" />
+                                 </styleClass>
                               </Label>
                               <HBox>
                                  <VBox.margin>
                                     <Insets left="50.0" />
                                  </VBox.margin>
                                  <children>
-                                    <Label styleClass="text-semi-white" text="Start a ">
+                                    <Label fx:id="fontLbl1" styleClass="text-semi-white" text="Start a ">
                                        <font>
                                           <Font name="System Italic" size="13.0" />
                                        </font>
                                     </Label>
-                                    <Label layoutX="10.0" layoutY="10.0" text="ClipShare">
+                                    <Label fx:id="fontLbl2" layoutX="10.0" layoutY="10.0" styleClass="text-blue" text="ClipShare">
                                        <font>
                                           <Font size="13.0" />
                                        </font>
-                                       <styleClass>
-                                          <String fx:value="text-blue" />
-                                          <String fx:value="text-bold" />
-                                       </styleClass>
                                     </Label>
-                                    <Label layoutX="10.0" layoutY="10.0" styleClass="text-semi-white" text="host on one of">
+                                    <Label fx:id="fontLbl3" layoutX="10.0" layoutY="10.0" styleClass="text-semi-white" text="host on one of">
                                        <font>
                                           <Font name="System Italic" size="13.0" />
                                        </font>
@@ -306,7 +298,7 @@
                                     </Label>
                                  </children>
                               </HBox>
-                              <Label layoutX="80.0" layoutY="65.0" prefHeight="19.0" prefWidth="197.0" styleClass="text-semi-white" text="them, and connect the rest." wrapText="true">
+                              <Label fx:id="fontLbl4" alignment="TOP_LEFT" layoutX="80.0" layoutY="65.0" prefHeight="19.0" prefWidth="702.0" styleClass="text-semi-white" text="them, and connect the rest." textAlignment="CENTER" wrapText="true">
                                  <font>
                                     <Font name="System Italic" size="13.0" />
                                  </font>
@@ -314,26 +306,33 @@
                                     <Insets left="50.0" />
                                  </VBox.margin>
                               </Label>
-                              <VBox fx:id="navBtnPane" alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                              <VBox fx:id="navBtnPane" alignment="TOP_CENTER" prefHeight="275.0" prefWidth="758.0">
                                  <children>
-                                    <Label styleClass="text-semi-white" text="Sync your clipboard" wrapText="true">
+                                    <Label fx:id="fontLbl5" styleClass="text-dark" text="Sync your clipboard" wrapText="true">
                                        <font>
-                                          <Font name="System Bold" size="13.0" />
+                                          <Font size="13.0" />
                                        </font>
+                                       <VBox.margin>
+                                          <Insets top="5.0" />
+                                       </VBox.margin>
                                     </Label>
-                                    <JFXButton fx:id="connectToHostBtn" onAction="#HandleClientConnection" prefHeight="35.0" prefWidth="311.0" text="Connect to a host">
+                                    <JFXButton fx:id="connectToHostBtn" onAction="#HandleClientConnection" prefHeight="40.0" prefWidth="328.0" text="Connect to a host">
+                                       <VBox.margin>
+                                          <Insets bottom="20.0" top="20.0" />
+                                       </VBox.margin>
                                        <styleClass>
                                           <String fx:value="outline-btn" />
                                           <String fx:value="text-blue" />
                                        </styleClass>
-                                       <VBox.margin>
-                                          <Insets bottom="20.0" top="20.0" />
-                                       </VBox.margin>
                                     </JFXButton>
-                                    <JFXButton fx:id="openAsHostBtn" onAction="#HandleHostConnection" prefHeight="35.0" prefWidth="311.0" styleClass="special-btn" text="Start a host" />
+                                    <JFXButton fx:id="openAsHostBtn" onAction="#HandleHostConnection" prefHeight="40.0" prefWidth="328.0" styleClass="special-btn" text="Start a host">
+                                       <VBox.margin>
+                                          <Insets bottom="20.0" />
+                                       </VBox.margin></JFXButton>
+                                    <ProgressIndicator fx:id="progressIndicator" />
                                  </children>
                                  <VBox.margin>
-                                    <Insets top="10.0" />
+                                    <Insets top="50.0" />
                                  </VBox.margin>
                               </VBox>
                            </children>
@@ -349,14 +348,29 @@
          <bottom>
             <VBox BorderPane.alignment="CENTER">
                <children>
-                  <HBox alignment="TOP_RIGHT" prefHeight="21.0" prefWidth="721.0">
+                  <HBox alignment="TOP_CENTER" prefHeight="21.0" prefWidth="721.0" spacing="20.0">
                      <children>
-                        <Label fx:id="settingsLbl" text="Settings">
+                        <Label fx:id="helpLbl" contentDisplay="RIGHT" layoutX="375.0" layoutY="10.0" text="Help">
                            <font>
                               <Font name="System Bold" size="13.0" />
                            </font>
                            <graphic>
-                              <MaterialDesignIconView glyphName="SETTINGS" size="15" styleClass="icon-fill" />
+                              <MaterialDesignIconView glyphName="HELP_CIRCLE" size="20" styleClass="icon-fill" />
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <styleClass>
+                              <String fx:value="text-dark" />
+                              <String fx:value="label-tags" />
+                           </styleClass>
+                        </Label>
+                        <Label fx:id="settingsLbl" contentDisplay="RIGHT" text="Settings">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                           <graphic>
+                              <MaterialDesignIconView glyphName="SETTINGS" size="18" styleClass="icon-fill" />
                            </graphic>
                            <cursor>
                               <Cursor fx:constant="HAND" />
