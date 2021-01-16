@@ -286,7 +286,7 @@ public class MainSceneController implements Initializable {
 
     @FXML
     private void HandleHostConnection(ActionEvent event) {
-        progressIndicator.setVisible( true );
+        progressIndicator.setVisible( true ); //show
         Thread networkThread = new Thread( () -> {
             try {
                 if (Helper.getSystemNetworkConfig() == null) {

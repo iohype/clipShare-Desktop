@@ -6,11 +6,17 @@ import com.IOhype.util.Constants;
 import com.IOhype.util.Helper;
 import com.IOhype.util.Session;
 import com.jfoenix.controls.JFXButton;
+import javafx.animation.Animation;
+import javafx.animation.RotateTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
 import java.io.IOException;
@@ -45,6 +51,33 @@ public class ConnectionTestController implements Initializable {
     @FXML
     private Label fontLbl4;
 
+    @FXML
+    private HBox invalidIpPane;
+
+    @FXML
+    private Label fontLbl5;
+
+    @FXML
+    private HBox addressNotReachablePane;
+
+    @FXML
+    private Label fontLbl6;
+
+    @FXML
+    private Label fontLbl7;
+
+    @FXML
+    private Label fontLbl8;
+
+    @FXML
+    private HBox invalidPortPane;
+
+    @FXML
+    private Label fontLbl9;
+
+    @FXML
+    private VBox logoPane;
+
     private boolean reply;
 
     private Alerts alerts;
@@ -78,38 +111,70 @@ public class ConnectionTestController implements Initializable {
         closeBtn.setFocusTraversable( false );
 //        ipAddressField.requestFocus();
         setFont();
+        initializeAlertPanes();
     }
 
 
     @FXML
     private void ConnectServerEvent(ActionEvent event) throws IOException {
-        if (ipAddressField.getText().isEmpty() || portField.getText().isEmpty()){ // check if fields are empty
-            alerts.Notification( "EMPTY_FIELD(S)","Ensure all fields are not empty" );
-        }
-        else {
+        if (ipAddressField.getText().isEmpty() || portField.getText().isEmpty()) { // check if fields are empty
+            alerts.Notification( "EMPTY_FIELD(S)", "Ensure all fields are not empty" );
+        } else {
             String ipAddress = ipAddressField.getText().trim();
             String port = portField.getText().trim();
-            if (Helper.isIpAddress( ipAddress )){
-                if ((Integer.parseInt( port ) > Constants.MAX_PORT) || (Integer.parseInt( port ) <= Constants.MIN_PORT)){
-
+            if (Helper.isIpAddress( ipAddress )) {
+                setAllPaneHidden();
+                ipAddressField.setPromptText( "e.g 102.168.43.168" );
+                if (ipAddressField.getStyleClass().contains( "error-border" )) {
+                    ipAddressField.getStyleClass().remove( "error-border" );
                 }
-                else {
-                    if (Helper.isServerReachable( ipAddress, 9090 )) {
-                        System.out.println( "Device Connected" );
-                        alerts.Notification( "Connection Successful", "Connection to the host is successful" );
-                        reply = true;
-                        Session.clipProps.setIpAddress( ipAddress );
-                        Session.appConfig.setPort( Integer.parseInt(port) );
-                        closeBtn.getScene().getWindow().hide();
-
-                    } else {
-                        System.out.println( "Device NOT Connected" );
-                        alerts.Notification( "Failed Connection", "Connection to the host is not successful" );
+                if (ipAddressField.getStyleClass().contains( "noConnect-border" )) {
+                    ipAddressField.getStyleClass().remove( "noConnect-border" );
+                }
+                if ((Integer.parseInt( port ) > Constants.MAX_PORT) || (Integer.parseInt( port ) <= Constants.MIN_PORT)) {
+                    portField.getStyleClass().add( "error-border" );
+                    portField.setPromptText( "Invalid input" );
+                    portField.setText( null );
+                    setAlertPaneShown( invalidPortPane, invalidIpPane, addressNotReachablePane );
+                } else {
+                    portField.setPromptText( "e.g 9090" );
+                    if (portField.getStyleClass().contains( "error-border" )) {
+                        portField.getStyleClass().remove( "error-border" ); // change portField border back to normal
                     }
-                }
-            }
-            else {
+                    RotateTransition rotateTransition = new RotateTransition();
+                    rotateTransition.setNode( logoPane );
+                    rotateTransition.setCycleCount( Animation.INDEFINITE );
+                    rotateTransition.play(); // rotate the logo pane
+                    Thread socketThread = new Thread( () -> {
+                        if (Helper.isServerReachable( ipAddress, Integer.parseInt( port ) )) {
+                            System.out.println( "Device Connected" );
+                            reply = true;
+                            Session.clipProps.setIpAddress( ipAddress );
+                            Session.appConfig.setPort( Integer.parseInt( port ) );
 
+                            Platform.runLater( () -> {
+                                alerts.Notification( "Connection Successful", "Connection to the host is successful" );
+                                closeBtn.getScene().getWindow().hide();
+                            } );
+
+                        } else {
+                            System.out.println( "Device NOT Connected" );
+                            Platform.runLater( () -> {
+                                rotateTransition.stop(); // stop rotation
+                                ipAddressField.getStyleClass().add( "noConnect-border" );
+                                portField.getStyleClass().add( "noConnect-border" );
+                                setAlertPaneShown( addressNotReachablePane, invalidPortPane, invalidIpPane );
+                            } );
+                        }
+                    } );
+                    socketThread.start();
+
+                }
+            } else {
+                setAlertPaneShown( invalidIpPane, invalidPortPane, addressNotReachablePane );
+                ipAddressField.getStyleClass().add( "error-border" );
+                ipAddressField.setText( null );
+                ipAddressField.setPromptText( "Bad input" );
             }
         }
 
@@ -130,11 +195,35 @@ public class ConnectionTestController implements Initializable {
         fontLbl2.setFont( regularFontLarge );
         fontLbl3.setFont( regularFontSmall );
         fontLbl4.setFont( regularFontSmall );
+        fontLbl5.setFont( regularFontSmall );
+        fontLbl6.setFont( regularFontSmall );
+        fontLbl7.setFont( regularFontSmall );
+        fontLbl8.setFont( regularFontSmall );
+        fontLbl9.setFont( regularFontSmall );
 
         ipAddressField.setFont( semiBoldSmall );
         portField.setFont( semiBoldSmall );
         testConnectionBtn.setFont( semiBoldLarge );
 
 
+    }
+
+    private void initializeAlertPanes() {
+        invalidIpPane.setVisible( false );
+        invalidPortPane.setVisible( false );
+        addressNotReachablePane.setVisible( false );
+    }
+
+    private void setAlertPaneShown(Node nodeToShow, Node nodeHidden1, Node nodeHidden2) {
+        nodeToShow.setVisible( true );
+        nodeToShow.toFront();
+        nodeHidden1.setVisible( false );
+        nodeHidden2.setVisible( false );
+    }
+
+    private void setAllPaneHidden() {
+        addressNotReachablePane.setVisible( false );
+        invalidPortPane.setVisible( false );
+        invalidIpPane.setVisible( false );
     }
 }

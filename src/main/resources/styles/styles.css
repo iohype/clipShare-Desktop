@@ -51,19 +51,9 @@
 
 .fields {
     -fx-background-color: #fafafa;
-    -fx-border-color: #e0e0e0;
+    -fx-border-color: #77CCE6;
     -fx-background-radius: 10px;
     -fx-border-radius: 10px;
-    -fx-border-width: 1px;
-}
-
-.fields:hover{
-    -fx-border-color: #77CCE6;
-    -fx-border-width: 1px;
-}
-
-.fields:focused{
-    -fx-border-color: #77CCE6;
     -fx-border-width: 1px;
 }
 
@@ -92,9 +82,24 @@
 .text-white{
     -fx-text-fill: white;
 }
+.error-text{
+    -fx-text-fill: #E50914;
+}
+
+.error-border {
+    -fx-border-color: #E50914;
+}
+
+.noConnect-border {
+    -fx-border-color: #f6851f;
+}
 
 .text-blue{
     -fx-text-fill: #00427b;
+}
+
+.text-orange{
+    -fx-text-fill: #f6851f;
 }
 
 .text-semi-white {

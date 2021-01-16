@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -39,11 +40,11 @@
                      <children>
                         <VBox prefHeight="65.0" prefWidth="211.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label fx:id="fontLbl" text="Connect to your " wrapText="true" />
+                              <Label fx:id="fontLbl" styleClass="text-dark" text="Connect to your " wrapText="true" />
                               <HBox>
                                  <children>
                                     <Label fx:id="fontLbl1" styleClass="text-blue" text="ClipShare" wrapText="true" />
-                                    <Label fx:id="fontLbl2" layoutX="10.0" layoutY="10.0" text="host" wrapText="true">
+                                    <Label fx:id="fontLbl2" layoutX="10.0" layoutY="10.0" styleClass="text-dark" text="host" wrapText="true">
                                        <padding>
                                           <Insets left="3.0" />
                                        </padding>
@@ -52,7 +53,7 @@
                               </HBox>
                            </children>
                         </VBox>
-                        <VBox prefHeight="20.0" prefWidth="30.0" styleClass="bodybg" />
+                        <VBox fx:id="logoPane" prefHeight="20.0" prefWidth="30.0" styleClass="bodybg" />
                      </children>
                   </HBox>
                   <Label fx:id="fontLbl3" text="Host IP adddress">
@@ -75,7 +76,7 @@
                         <Insets bottom="-25.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField fx:id="portField" layoutX="25.0" layoutY="100.0" prefHeight="35.0" promptText="Enter host IP address" styleClass="fields" />
+                  <TextField fx:id="portField" layoutX="25.0" layoutY="100.0" prefHeight="35.0" promptText="E.g 9090" styleClass="fields" />
                   <HBox alignment="CENTER" prefHeight="59.0" prefWidth="347.0" spacing="10.0">
                      <children>
                         <JFXButton fx:id="testConnectionBtn" onAction="#ConnectServerEvent" prefHeight="40.0" prefWidth="166.0" text="Connect">
@@ -91,6 +92,37 @@
          <padding>
             <Insets left="20.0" right="20.0" top="10.0" />
          </padding>
+         <bottom>
+            <StackPane prefHeight="35.0" prefWidth="337.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox fx:id="invalidIpPane" alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="pane-color">
+                     <children>
+                        <Label fx:id="fontLbl5" styleClass="error-text" text="Invalid IP address" />
+                     </children>
+                  </HBox>
+                  <HBox fx:id="addressNotReachablePane" alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="pane-color">
+                     <children>
+                        <Label fx:id="fontLbl6" styleClass="text-orange" text="No" />
+                        <Label fx:id="fontLbl7" layoutX="170.0" layoutY="10.0" styleClass="text-blue" text="ClipShare">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label fx:id="fontLbl8" layoutX="162.0" layoutY="10.0" styleClass="text-orange" text="host at that address">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox fx:id="invalidPortPane" alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0" styleClass="pane-color">
+                     <children>
+                        <Label fx:id="fontLbl9" styleClass="error-text" text="Invalid Port" />
+                     </children>
+                  </HBox>
+               </children>
+            </StackPane>
+         </bottom>
       </BorderPane>
    </children>
    <styleClass>
