@@ -1,5 +1,6 @@
 package com.IOhype.controllers;
 
+import com.IOhype.MainApp;
 import com.IOhype.model.AppConfig;
 import com.IOhype.util.Alerts;
 import com.IOhype.util.Constants;
@@ -11,8 +12,10 @@ import javafx.fxml.Initializable;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXToggleButton;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 
 import java.io.IOException;
 import java.net.URL;
@@ -39,6 +42,12 @@ public class SettingsSceneController implements Initializable {
 
     @FXML
     private JFXButton defaultSettingsBtn;
+
+    @FXML
+    private Label fontLbl;
+
+    @FXML
+    private Label fontLbl1;
 
     private Alerts alerts;
 
@@ -94,6 +103,8 @@ public class SettingsSceneController implements Initializable {
             defaultSettingsBtn.setDisable( true );
         }
 
+        closeBtn.setFocusTraversable( false );
+        setFont(); //initialize external fonts to system
     }
 
     @FXML
@@ -134,6 +145,22 @@ public class SettingsSceneController implements Initializable {
                 alerts.Notification( "CONFIGURATION UPDATED", "App configurations updated" );
             }
         }
+    }
+
+    private void setFont(){
+        Font regularFontLarge = Font.loadFont( MainApp.class.getResourceAsStream( "/fonts/Montserrat/Montserrat-Regular.ttf" ), 15 );
+        Font regularFontSmall = Font.loadFont( MainApp.class.getResourceAsStream( "/fonts/Montserrat/Montserrat-Regular.ttf" ), 13 );
+        Font semiBoldSmall = Font.loadFont( MainApp.class.getResourceAsStream( "/fonts/Montserrat/Montserrat-SemiBold.ttf" ), 13 );
+        Font semiBoldLarge = Font.loadFont( MainApp.class.getResourceAsStream( "/fonts/Montserrat/Montserrat-SemiBold.ttf" ), 15 );
+
+        fontLbl.setFont( semiBoldLarge );
+        fontLbl1.setFont( semiBoldSmall );
+        portField.setFont( regularFontLarge );
+        beepToggle.setFont( regularFontSmall );
+        themeToggle.setFont( regularFontSmall );
+
+        defaultSettingsBtn.setFont( semiBoldLarge );
+        updateSettingsBtn.setFont( semiBoldLarge );
     }
 
 }

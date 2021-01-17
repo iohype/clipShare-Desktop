@@ -52,11 +52,12 @@ public class MainApp extends Application {
         AnchorPane root = loader.load();
 
         Stage stage = new Stage();
-        stage.initStyle(StageStyle.UNDECORATED);
+        stage.initStyle(StageStyle.TRANSPARENT);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Welcome");
 
         Scene scene = new Scene(root);
+        scene.setFill( null );
         stage.setScene(scene);
         stage.setOnCloseRequest(Event::consume); // prevent window from closing from windows event
         return stage;
@@ -90,12 +91,12 @@ public class MainApp extends Application {
         AnchorPane root = loader.load();
 
         Stage stage = new Stage();
-        stage.initStyle(StageStyle.UNDECORATED);
+        stage.initStyle(StageStyle.TRANSPARENT);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Application Configurations");
 
         Scene scene = new Scene(root);
-        scene.setFill( Color.TRANSPARENT );
+        scene.setFill( null);
         stage.setScene(scene);
 
         return stage;

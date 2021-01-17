@@ -28,7 +28,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.SocketException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
@@ -210,6 +209,25 @@ public class MainSceneController implements Initializable {
             }
         } );
 
+        helpLbl.setOnMouseClicked( event -> {
+            try {
+                BoxBlur blur = new BoxBlur( 10, 10, 10 );
+                stackPane.setEffect( blur );
+                root.getStyleClass().add( "pane-fade-color" );
+                homePane.getStyleClass().add( "pane-fade-color" );
+                clientConnectionPane.getStyleClass().add( "pane-fade-color" );
+                serverPane.getStyleClass().add( "pane-fade-color" );
+                MainApp.infoStage().showAndWait();
+                root.getStyleClass().remove( "pane-fade-color" );
+                homePane.getStyleClass().remove( "pane-fade-color" );
+                clientConnectionPane.getStyleClass().remove( "pane-fade-color" );
+                serverPane.getStyleClass().remove( "pane-fade-color" );
+                stackPane.setEffect( null );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } );
+
         //show information about software usage
         //perform heavy tasks such as getting network connection info
         Platform.runLater( () -> {
@@ -220,7 +238,6 @@ public class MainSceneController implements Initializable {
                 //bind labels to clip text
                 this.clipboard_server.textProperty().bind( Session.clipProps.clipStringProperty() );
                 this.clipboard_client.textProperty().bind( Session.clipProps.clipStringProperty() );
-
 
 
             } catch (IOException e) {

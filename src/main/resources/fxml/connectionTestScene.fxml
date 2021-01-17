@@ -76,7 +76,7 @@
                         <Insets bottom="-25.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField fx:id="portField" layoutX="25.0" layoutY="100.0" prefHeight="35.0" promptText="E.g 9090" styleClass="fields" />
+                  <TextField fx:id="portField" layoutX="25.0" layoutY="100.0" prefHeight="35.0" promptText="e.g 9090" styleClass="fields" />
                   <HBox alignment="CENTER" prefHeight="59.0" prefWidth="347.0" spacing="10.0">
                      <children>
                         <JFXButton fx:id="testConnectionBtn" onAction="#ConnectServerEvent" prefHeight="40.0" prefWidth="166.0" text="Connect">
