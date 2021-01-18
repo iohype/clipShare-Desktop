@@ -1,0 +1,125 @@
+.bodybg{
+    -fx-background-image: url("../images/logo.png");
+    -fx-background-size: 100% 100%;
+}
+
+.pane-color{
+    -fx-background-color: #121212;
+}
+
+.pane-background-radius {
+    -fx-background-radius: 20px;
+}
+
+.pane-border-radius {
+    -fx-border-radius: 20px;
+}
+
+.pane-fade-color{
+    -fx-background-color: #222222;
+}
+
+.pane-border {
+    -fx-border-color: #424242;
+}
+
+.primary-color{
+    -fx-background-color: #00427b;
+}
+
+.primary-btn{
+    -fx-background-color: #00427b;
+    -fx-border-color: #00427b;
+    -fx-background-radius: 16px;
+    -fx-border-radius: 16px;
+    -fx-text-fill: #fafafa;
+}
+
+.special-btn{
+    -fx-background-color: #77CCE6;
+    -fx-border-color: #888888;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-text-fill: #333333;
+}
+
+.outline-btn{
+    -fx-background-color: transparent;
+    -fx-background-radius: 10px;
+    -fx-border-color: #00427b;
+    -fx-border-radius: 10px;
+}
+
+.fields {
+    -fx-background-color: #222222;
+    -fx-border-color: #77CCE6;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1px;
+    -fx-text-fill: #fafafa;
+}
+
+.clip-board-label{
+    -fx-background-color: #222222;
+    -fx-border-color: #77CCE6;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+}
+
+.closeBtn:pressed{
+    -fx-background-color: blue;
+}
+
+.closeBtn:hover{
+    -fx-background-color: red;
+}
+.minimizeBtn:hover{
+    -fx-background-color: #333333;
+}
+
+.text-dark{
+    -fx-text-fill: #fafafa;
+}
+
+.text-white{
+    -fx-text-fill: #424242;
+}
+.error-text{
+    -fx-text-fill: #E50914;
+}
+
+.error-border {
+    -fx-border-color: #E50914;
+}
+
+.noConnect-border {
+    -fx-border-color: #f6851f;
+}
+
+.text-blue{
+    -fx-text-fill: #77CCE6;
+}
+
+.text-orange{
+    -fx-text-fill: #f6851f;
+}
+
+.text-semi-white {
+    -fx-text-fill: #989898;
+}
+
+.icon-fill{
+    -fx-Fill: #f6851f;
+}
+
+.label-tags:hover{
+    -fx-underline: true;
+}
+
+.windows-icon{
+    -fx-Fill: #e0e0e0;
+}
+
+.toggle-btn{
+    -jfx-toggle-color: #f6851f;
+}

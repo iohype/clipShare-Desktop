@@ -204,6 +204,7 @@ public class MainSceneController implements Initializable {
                 clientConnectionPane.getStyleClass().remove( "pane-fade-color" );
                 serverPane.getStyleClass().remove( "pane-fade-color" );
                 stackPane.setEffect( null );
+                setDarkMode();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -223,6 +224,7 @@ public class MainSceneController implements Initializable {
                 clientConnectionPane.getStyleClass().remove( "pane-fade-color" );
                 serverPane.getStyleClass().remove( "pane-fade-color" );
                 stackPane.setEffect( null );
+                setDarkMode();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -234,6 +236,7 @@ public class MainSceneController implements Initializable {
             try {
                 Session.clipProps = new ClipProps( new SimpleStringProperty( "Clipboard data" ), 0, null );
                 Session.appConfig = Helper.getAppConfig();
+                setDarkMode(); //set Dark mode if enabled
 
                 //bind labels to clip text
                 this.clipboard_server.textProperty().bind( Session.clipProps.clipStringProperty() );
@@ -410,5 +413,18 @@ public class MainSceneController implements Initializable {
             ipAddress_client.setFont( semiBoldLarge );
             clipboard_client.setFont( regularFontSmall );
         } );
+    }
+
+    private void setDarkMode() {
+        String dark_mode = MainApp.class.getResource( "/styles/dark_mode.css" ).toExternalForm();
+        if (Session.appConfig.isDark_mode()) {
+            root.getStylesheets().add( dark_mode );
+        } else {
+            if (root.getStylesheets().contains( dark_mode )) {
+                root.getStylesheets().remove( dark_mode );
+            }
+
+        }
+
     }
 }

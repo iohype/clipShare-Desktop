@@ -30,6 +30,9 @@ public class Alerts {
                 .graphic( null )
                 .hideAfter( Duration.seconds( 3 ) )
                 .position( Pos.TOP_RIGHT );
+        if (Session.appConfig.isDark_mode()){
+            notificationBuilder.darkStyle();
+        }
         notificationBuilder.showInformation();
         notificationBuilder.hideCloseButton();
 

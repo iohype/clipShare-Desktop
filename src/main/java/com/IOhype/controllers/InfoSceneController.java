@@ -1,17 +1,21 @@
 package com.IOhype.controllers;
 
 import com.IOhype.MainApp;
+import com.IOhype.util.Session;
 import com.jfoenix.controls.JFXButton;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class InfoSceneController implements Initializable {
+    @FXML
+    private AnchorPane root;
 
     @FXML
     private Label headerLbl;
@@ -47,7 +51,8 @@ public class InfoSceneController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         //set dismiss button active
         dismissBtn.setOnAction( e -> Platform.runLater( () -> dismissBtn.getScene().getWindow().hide() ) );
-        setFont();
+        setFont(); //initialize fonts with external fonts
+        setDarkMode(); // set Dark mode if configured
     }
 
     private void setFont() {
@@ -66,5 +71,16 @@ public class InfoSceneController implements Initializable {
         fontLbl8.setFont( regularFontSmall );
 
         dismissBtn.setFont( semiBoldLarge );
+    }
+
+    private void setDarkMode() {
+        String dark_mode = MainApp.class.getResource( "/styles/dark_mode.css" ).toExternalForm();
+        if (Session.appConfig.isDark_mode()) {
+            root.getStylesheets().add( dark_mode );
+        } else {
+            if (root.getStylesheets().contains( dark_mode )) {
+                root.getStylesheets().remove( dark_mode );
+            }
+        }
     }
 }

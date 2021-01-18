@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -24,6 +25,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ConnectionTestController implements Initializable {
+    @FXML
+    private AnchorPane root;
+
     @FXML
     private TextField ipAddressField;
 
@@ -112,6 +116,8 @@ public class ConnectionTestController implements Initializable {
 //        ipAddressField.requestFocus();
         setFont();
         initializeAlertPanes();
+
+        setDarkMode();
     }
 
 
@@ -225,5 +231,17 @@ public class ConnectionTestController implements Initializable {
         addressNotReachablePane.setVisible( false );
         invalidPortPane.setVisible( false );
         invalidIpPane.setVisible( false );
+    }
+
+    private void setDarkMode() {
+        String dark_mode = MainApp.class.getResource( "/styles/dark_mode.css" ).toExternalForm();
+        if (Session.appConfig.isDark_mode()) {
+            root.getStylesheets().add( dark_mode );
+        } else {
+            if (root.getStylesheets().contains( dark_mode )) {
+                root.getStylesheets().remove( dark_mode );
+            }
+        }
+
     }
 }

@@ -6,14 +6,15 @@ import com.IOhype.util.Alerts;
 import com.IOhype.util.Constants;
 import com.IOhype.util.Helper;
 import com.IOhype.util.Session;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.fxml.Initializable;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXToggleButton;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 
@@ -49,6 +50,9 @@ public class SettingsSceneController implements Initializable {
     @FXML
     private Label fontLbl1;
 
+    @FXML
+    private AnchorPane root;
+
     private Alerts alerts;
 
     @Override
@@ -65,19 +69,21 @@ public class SettingsSceneController implements Initializable {
         closeBtn.setOnAction( event -> closeBtn.getScene().getWindow().hide() );
 
         themeToggle.setOnAction( event -> {
-            if (themeToggle.isSelected()){
+            if (themeToggle.isSelected()) {
                 themeToggle.setText( "Dark Theme" );
-            }
-           else {
-               themeToggle.setText( "Light Theme" );
+                root.getStylesheets().add( MainApp.class.getResource( "/styles/dark_mode.css" ).toExternalForm() );
+            } else {
+                themeToggle.setText( "Light Theme" );
+                if (root.getStylesheets().contains( MainApp.class.getResource( "/styles/dark_mode.css" ).toExternalForm() )) {
+                    root.getStylesheets().remove( MainApp.class.getResource( "/styles/dark_mode.css" ).toExternalForm() );
+                }
             }
         } );
 
         beepToggle.setOnAction( event -> {
-            if (beepToggle.isSelected()){
+            if (beepToggle.isSelected()) {
                 beepToggle.setText( "Beep" );
-            }
-            else {
+            } else {
                 beepToggle.setText( "Mute" );
             }
         } );
@@ -94,17 +100,17 @@ public class SettingsSceneController implements Initializable {
         } );
 
         //initialize fields based
-        if (Session.edit_port){
+        if (Session.edit_port) {
             portField.setEditable( true );
             defaultSettingsBtn.setDisable( false );
-        }
-        else {
+        } else {
             portField.setEditable( false );
             defaultSettingsBtn.setDisable( true );
         }
 
         closeBtn.setFocusTraversable( false );
         setFont(); //initialize external fonts to system
+        setDarkMode(); // initialize darkMode
     }
 
     @FXML
@@ -116,8 +122,8 @@ public class SettingsSceneController implements Initializable {
         Session.appConfig.setDark_mode( false );
         Session.appConfig.setPort( Constants.DEFAULT_PORT );
         AppConfig appConfig = new AppConfig( false, false, Constants.DEFAULT_PORT );
-        Helper.setAppConfig(appConfig); //set default config
-        alerts.Notification( "DEFAULT SET","Default configurations saved" ); //show alerts
+        Helper.setAppConfig( appConfig ); //set default config
+        alerts.Notification( "DEFAULT SET", "Default configurations saved" ); //show alerts
 
         portField.setText( String.valueOf( Session.appConfig.getPort() ) );
         beepToggle.setSelected( Session.appConfig.isBeep() );
@@ -129,15 +135,13 @@ public class SettingsSceneController implements Initializable {
         boolean dark_mode = themeToggle.isSelected();
         boolean beep = beepToggle.isSelected();
 
-        if (portField.getText().isEmpty()){
-            alerts.Notification( "EMPTY_FIELD","Port field cannot be empty" );
-        }
-        else {
+        if (portField.getText().isEmpty()) {
+            alerts.Notification( "EMPTY_FIELD", "Port field cannot be empty" );
+        } else {
             String port = portField.getText();
-            if ((Integer.parseInt( port ) > Constants.MAX_PORT) || (Integer.parseInt( port ) <= Constants.MIN_PORT)){
-                alerts.Notification( "INVALID PORT","RANGE OF PORT IS "+Constants.MIN_PORT+1+" - "+Constants.MAX_PORT );
-            }
-            else {
+            if ((Integer.parseInt( port ) > Constants.MAX_PORT) || (Integer.parseInt( port ) <= Constants.MIN_PORT)) {
+                alerts.Notification( "INVALID PORT", "RANGE OF PORT IS " + Constants.MIN_PORT + 1 + " - " + Constants.MAX_PORT );
+            } else {
                 Session.appConfig.setBeep( beep );
                 Session.appConfig.setDark_mode( dark_mode );
                 Session.appConfig.setPort( Integer.parseInt( port ) );
@@ -147,7 +151,7 @@ public class SettingsSceneController implements Initializable {
         }
     }
 
-    private void setFont(){
+    private void setFont() {
         Font regularFontLarge = Font.loadFont( MainApp.class.getResourceAsStream( "/fonts/Montserrat/Montserrat-Regular.ttf" ), 15 );
         Font regularFontSmall = Font.loadFont( MainApp.class.getResourceAsStream( "/fonts/Montserrat/Montserrat-Regular.ttf" ), 13 );
         Font semiBoldSmall = Font.loadFont( MainApp.class.getResourceAsStream( "/fonts/Montserrat/Montserrat-SemiBold.ttf" ), 13 );
@@ -161,6 +165,19 @@ public class SettingsSceneController implements Initializable {
 
         defaultSettingsBtn.setFont( semiBoldLarge );
         updateSettingsBtn.setFont( semiBoldLarge );
+    }
+
+    private void setDarkMode() {
+        String dark_mode = MainApp.class.getResource( "/styles/dark_mode.css" ).toExternalForm();
+        if (Session.appConfig.isDark_mode()) {
+            root.getStylesheets().add( dark_mode );
+        } else {
+            if (root.getStylesheets().contains( dark_mode )) {
+                root.getStylesheets().remove( dark_mode );
+            }
+        }
+
+
     }
 
 }

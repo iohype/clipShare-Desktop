@@ -32,6 +32,7 @@
     -fx-border-color: #00427b;
     -fx-background-radius: 16px;
     -fx-border-radius: 16px;
+    -fx-text-fill: #fafafa;
 }
 
 .special-btn{
