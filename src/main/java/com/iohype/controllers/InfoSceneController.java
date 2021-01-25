@@ -1,7 +1,7 @@
-package com.IOhype.controllers;
+package com.iohype.controllers;
 
-import com.IOhype.MainApp;
-import com.IOhype.util.Session;
+import com.iohype.MainApp;
+import com.iohype.util.Session;
 import com.jfoenix.controls.JFXButton;
 import javafx.application.Platform;
 import javafx.fxml.FXML;

@@ -1,24 +1,19 @@
-package com.IOhype;
+package com.iohype;
 
-import com.IOhype.controllers.ConnectionTestController;
+import com.iohype.controllers.ConnectionTestController;
 import javafx.application.Application;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 public class MainApp extends Application {
-
-    private static final Logger log = LoggerFactory.getLogger(MainApp.class);
 
     public static void main(String[] args) throws Exception {
         launch(args);
@@ -41,6 +36,11 @@ public class MainApp extends Application {
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
+
+        stage.setOnCloseRequest( e -> {
+            e.consume();
+
+        } );
 
         return stage;
     }

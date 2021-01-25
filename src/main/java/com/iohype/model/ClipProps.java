@@ -1,4 +1,4 @@
-package com.IOhype.model;
+package com.iohype.model;
 
 import javafx.beans.property.SimpleStringProperty;
 

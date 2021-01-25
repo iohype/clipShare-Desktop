@@ -1,10 +1,10 @@
-package com.IOhype.controllers;
+package com.iohype.controllers;
 
-import com.IOhype.MainApp;
-import com.IOhype.util.Alerts;
-import com.IOhype.util.Constants;
-import com.IOhype.util.Helper;
-import com.IOhype.util.Session;
+import com.iohype.MainApp;
+import com.iohype.util.Alerts;
+import com.iohype.util.Constants;
+import com.iohype.util.Helper;
+import com.iohype.util.Session;
 import com.jfoenix.controls.JFXButton;
 import javafx.animation.Animation;
 import javafx.animation.RotateTransition;
@@ -14,12 +14,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -80,7 +80,7 @@ public class ConnectionTestController implements Initializable {
     private Label fontLbl9;
 
     @FXML
-    private VBox logoPane;
+    private ProgressIndicator progressIndicator;
 
     private boolean reply;
 
@@ -88,7 +88,13 @@ public class ConnectionTestController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // initialize components
         alerts = new Alerts();
+        closeBtn.setFocusTraversable( false );
+        progressIndicator.setVisible( false );
+        setFont();
+        initializeAlertPanes();
+        setDarkMode();
 
         this.reply = false;
 
@@ -112,17 +118,11 @@ public class ConnectionTestController implements Initializable {
                 event.consume();
             }
         } );
-        closeBtn.setFocusTraversable( false );
-//        ipAddressField.requestFocus();
-        setFont();
-        initializeAlertPanes();
 
-        setDarkMode();
     }
 
-
     @FXML
-    private void ConnectServerEvent(ActionEvent event) throws IOException {
+    private void ConnectServerEvent(ActionEvent event) {
         if (ipAddressField.getText().isEmpty() || portField.getText().isEmpty()) { // check if fields are empty
             alerts.Notification( "EMPTY_FIELD(S)", "Ensure all fields are not empty" );
         } else {
@@ -147,10 +147,10 @@ public class ConnectionTestController implements Initializable {
                     if (portField.getStyleClass().contains( "error-border" )) {
                         portField.getStyleClass().remove( "error-border" ); // change portField border back to normal
                     }
-                    RotateTransition rotateTransition = new RotateTransition();
-                    rotateTransition.setNode( logoPane );
-                    rotateTransition.setCycleCount( Animation.INDEFINITE );
-                    rotateTransition.play(); // rotate the logo pane
+                    progressIndicator.setVisible( true );
+                    ipAddressField.setDisable( true );
+                    portField.setDisable( true );
+                    // rotate the logo pane
                     Thread socketThread = new Thread( () -> {
                         if (Helper.isServerReachable( ipAddress, Integer.parseInt( port ) )) {
                             System.out.println( "Device Connected" );
@@ -159,6 +159,9 @@ public class ConnectionTestController implements Initializable {
                             Session.appConfig.setPort( Integer.parseInt( port ) );
 
                             Platform.runLater( () -> {
+                                progressIndicator.setVisible( false );
+                                ipAddressField.setDisable( false );
+                                portField.setDisable( false );
                                 alerts.Notification( "Connection Successful", "Connection to the host is successful" );
                                 closeBtn.getScene().getWindow().hide();
                             } );
@@ -166,9 +169,11 @@ public class ConnectionTestController implements Initializable {
                         } else {
                             System.out.println( "Device NOT Connected" );
                             Platform.runLater( () -> {
-                                rotateTransition.stop(); // stop rotation
                                 ipAddressField.getStyleClass().add( "noConnect-border" );
                                 portField.getStyleClass().add( "noConnect-border" );
+                                progressIndicator.setVisible( false );
+                                ipAddressField.setDisable( false );
+                                portField.setDisable( false );
                                 setAlertPaneShown( addressNotReachablePane, invalidPortPane, invalidIpPane );
                             } );
                         }

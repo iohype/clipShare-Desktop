@@ -1,11 +1,11 @@
-package com.IOhype.controllers;
+package com.iohype.controllers;
 
-import com.IOhype.MainApp;
-import com.IOhype.model.AppConfig;
-import com.IOhype.util.Alerts;
-import com.IOhype.util.Constants;
-import com.IOhype.util.Helper;
-import com.IOhype.util.Session;
+import com.iohype.MainApp;
+import com.iohype.model.AppConfig;
+import com.iohype.util.Alerts;
+import com.iohype.util.Constants;
+import com.iohype.util.Helper;
+import com.iohype.util.Session;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXToggleButton;
 import javafx.application.Platform;

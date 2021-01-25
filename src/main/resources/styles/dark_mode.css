@@ -64,6 +64,7 @@
     -fx-border-color: #77CCE6;
     -fx-background-radius: 15px;
     -fx-border-radius: 15px;
+    -fx-text-fill: #fafafa;
 }
 
 .closeBtn:pressed{

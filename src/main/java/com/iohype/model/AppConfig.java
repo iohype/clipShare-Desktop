@@ -1,4 +1,4 @@
-package com.IOhype.model;
+package com.iohype.model;
 
 public class AppConfig {
     private boolean dark_mode;

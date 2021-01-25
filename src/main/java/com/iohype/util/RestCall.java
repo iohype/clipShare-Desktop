@@ -1,4 +1,4 @@
-package com.IOhype.util;
+package com.iohype.util;
 
 import okhttp3.*;
 

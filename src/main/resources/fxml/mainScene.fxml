@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.IOhype.controllers.MainSceneController">
+<AnchorPane fx:id="root" prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.iohype.controllers.MainSceneController">
    <children>
       <BorderPane layoutX="261.0" layoutY="163.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -60,6 +60,108 @@
          <center>
             <StackPane fx:id="stackPane" BorderPane.alignment="CENTER">
                <children>
+                  <StackPane fx:id="serverPane" styleClass="pane-color">
+                     <children>
+                        <VBox opacity="0.04" prefHeight="200.0" prefWidth="100.0" styleClass="bodybg" />
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <padding>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </padding>
+                           <children>
+                              <Label fx:id="fontLbl11" styleClass="text-semi-white" text="Connect your devices to this">
+                                 <VBox.margin>
+                                    <Insets left="80.0" top="20.0" />
+                                 </VBox.margin>
+                                 <font>
+                                    <Font name="System Italic" size="13.0" />
+                                 </font>
+                              </Label>
+                              <HBox>
+                                 <VBox.margin>
+                                    <Insets left="80.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Label fx:id="fontLbl12" styleClass="text-blue" text="ClipShare">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="fontLbl13" styleClass="text-semi-white" text="host via the address below">
+                                       <font>
+                                          <Font name="System Italic" size="13.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets left="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="20.0">
+                                 <VBox.margin>
+                                    <Insets left="80.0" right="80.0" top="20.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <VBox>
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                       <children>
+                                          <Label fx:id="fontLbl14" styleClass="text-dark" text="IP address" />
+                                          <Label fx:id="ipAddress_server" text="192.168.43.2020">
+                                             <font>
+                                                <Font name="System Bold" size="17.0" />
+                                             </font>
+                                             <styleClass>
+                                                <String fx:value="text-blue" />
+                                                <String fx:value="text-bold" />
+                                             </styleClass>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <VBox>
+                                       <HBox.margin>
+                                          <Insets left="5.0" />
+                                       </HBox.margin>
+                                       <children>
+                                          <Label fx:id="fontLbl15" styleClass="text-dark" text="Port" />
+                                          <Label fx:id="port_serverLbl" text="192.168.43.2020">
+                                             <font>
+                                                <Font name="System Bold" size="17.0" />
+                                             </font>
+                                             <styleClass>
+                                                <String fx:value="text-blue" />
+                                                <String fx:value="text-bold" />
+                                             </styleClass>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <JFXButton fx:id="stopServerConnection" contentDisplay="RIGHT" onAction="#HandleDisconnectServerConnect" prefHeight="40.0" prefWidth="187.0" styleClass="primary-btn" text="Stop Hosting" textFill="WHITE">
+                                             <font>
+                                                <Font size="13.0" />
+                                             </font>
+                                          </JFXButton>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+                              <VBox alignment="CENTER" prefHeight="222.0" prefWidth="598.0" spacing="20.0">
+                                 <children>
+                                    <Label fx:id="clipboard_server" alignment="CENTER" prefHeight="222.0" prefWidth="598.0" styleClass="clip-board-label" text="Clipboard content" textAlignment="CENTER" wrapText="true">
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="80.0" right="80.0" top="30.0" />
+                                 </VBox.margin>
+                              </VBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </StackPane>
                   <StackPane fx:id="clientConnectionPane" styleClass="pane-color">
                      <children>
                         <VBox opacity="0.04" prefHeight="200.0" prefWidth="100.0" styleClass="bodybg" />
@@ -129,9 +231,9 @@
                                     </VBox>
                                     <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <JFXButton fx:id="disconnectBtn" contentDisplay="RIGHT" onAction="#HandleDisconnectClientConnect" prefHeight="35.0" prefWidth="187.0" styleClass="primary-btn" text="Disconnect" textFill="WHITE">
+                                          <JFXButton fx:id="disconnectBtn" contentDisplay="RIGHT" onAction="#HandleDisconnectClientConnect" prefHeight="40.0" prefWidth="187.0" styleClass="primary-btn" text="Disconnect" textFill="WHITE">
                                              <font>
-                                                <Font name="System Bold" size="13.0" />
+                                                <Font size="13.0" />
                                              </font>
                                           </JFXButton>
                                        </children>
@@ -148,108 +250,6 @@
                                  </children>
                                  <VBox.margin>
                                     <Insets top="20.0" />
-                                 </VBox.margin>
-                              </VBox>
-                           </children>
-                        </VBox>
-                     </children>
-                  </StackPane>
-                  <StackPane fx:id="serverPane" styleClass="pane-color">
-                     <children>
-                        <VBox opacity="0.04" prefHeight="200.0" prefWidth="100.0" styleClass="bodybg" />
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <padding>
-                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                           </padding>
-                           <children>
-                              <Label fx:id="fontLbl11" styleClass="text-semi-white" text="Connect your devices to this">
-                                 <VBox.margin>
-                                    <Insets left="80.0" top="20.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font name="System Italic" size="13.0" />
-                                 </font>
-                              </Label>
-                              <HBox>
-                                 <VBox.margin>
-                                    <Insets left="80.0" />
-                                 </VBox.margin>
-                                 <children>
-                                    <Label fx:id="fontLbl12" styleClass="text-blue" text="ClipShare">
-                                       <font>
-                                          <Font size="13.0" />
-                                       </font>
-                                    </Label>
-                                    <Label fx:id="fontLbl13" styleClass="text-semi-white" text="host via the address below">
-                                       <font>
-                                          <Font name="System Italic" size="13.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets left="5.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER_LEFT" spacing="20.0">
-                                 <VBox.margin>
-                                    <Insets left="80.0" right="80.0" top="20.0" />
-                                 </VBox.margin>
-                                 <children>
-                                    <VBox>
-                                       <HBox.margin>
-                                          <Insets />
-                                       </HBox.margin>
-                                       <children>
-                                          <Label fx:id="fontLbl14" styleClass="text-bold" text="IP address" />
-                                          <Label fx:id="ipAddress_server" text="192.168.43.2020">
-                                             <font>
-                                                <Font name="System Bold" size="17.0" />
-                                             </font>
-                                             <styleClass>
-                                                <String fx:value="text-blue" />
-                                                <String fx:value="text-bold" />
-                                             </styleClass>
-                                          </Label>
-                                       </children>
-                                    </VBox>
-                                    <VBox>
-                                       <HBox.margin>
-                                          <Insets left="5.0" />
-                                       </HBox.margin>
-                                       <children>
-                                          <Label fx:id="fontLbl15" styleClass="text-bold" text="Port" />
-                                          <Label fx:id="port_serverLbl" text="192.168.43.2020">
-                                             <font>
-                                                <Font name="System Bold" size="17.0" />
-                                             </font>
-                                             <styleClass>
-                                                <String fx:value="text-blue" />
-                                                <String fx:value="text-bold" />
-                                             </styleClass>
-                                          </Label>
-                                       </children>
-                                    </VBox>
-                                    <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
-                                       <children>
-                                          <JFXButton fx:id="stopServerConnection" contentDisplay="RIGHT" onAction="#HandleDisconnectServerConnect" prefHeight="35.0" prefWidth="187.0" styleClass="primary-btn" text="Stop Hosting" textFill="WHITE">
-                                             <font>
-                                                <Font name="System Bold" size="13.0" />
-                                             </font>
-                                          </JFXButton>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </HBox>
-                              <VBox alignment="CENTER" prefHeight="222.0" prefWidth="598.0" spacing="20.0">
-                                 <children>
-                                    <Label fx:id="clipboard_server" alignment="CENTER" prefHeight="222.0" prefWidth="598.0" styleClass="clip-board-label" text="Clipboard content" textAlignment="CENTER" wrapText="true">
-                                       <padding>
-                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                       </padding>
-                                    </Label>
-                                 </children>
-                                 <VBox.margin>
-                                    <Insets left="80.0" right="80.0" top="30.0" />
                                  </VBox.margin>
                               </VBox>
                            </children>
@@ -352,7 +352,7 @@
                      <children>
                         <Label fx:id="helpLbl" contentDisplay="RIGHT" layoutX="375.0" layoutY="10.0" text="Help">
                            <font>
-                              <Font name="System Bold" size="13.0" />
+                              <Font size="13.0" />
                            </font>
                            <graphic>
                               <MaterialDesignIconView glyphName="HELP_CIRCLE" size="20" styleClass="icon-fill" />
@@ -367,7 +367,7 @@
                         </Label>
                         <Label fx:id="settingsLbl" contentDisplay="RIGHT" text="Settings">
                            <font>
-                              <Font name="System Bold" size="13.0" />
+                              <Font size="13.0" />
                            </font>
                            <graphic>
                               <MaterialDesignIconView glyphName="SETTINGS" size="18" styleClass="icon-fill" />

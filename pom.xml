@@ -3,7 +3,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.IOhype</groupId>
+    <groupId>com.iohype</groupId>
     <artifactId>clip_share</artifactId>
     <name>clip_share</name>
 
@@ -32,15 +32,18 @@
                 <version>8.1.5</version>
                 <configuration>
 
-                    <mainClass>com.IOhype.MainApp</mainClass>
+                    <mainClass>com.iohype.MainApp</mainClass>
 
                     <!-- only required if signing the jar file -->
                     <keyStoreAlias>example-user</keyStoreAlias>
                     <keyStorePassword>example-password</keyStorePassword>
+                    <vendor>IOhype</vendor>
+                    <description>Share clipboard with connected devices</description>
                     <allPermissions>true</allPermissions>
-                    <additionalAppResources>${project.basedir}/tools</additionalAppResources>
+                    <needShortcut>true</needShortcut>
+                    <additionalAppResources>${project.basedir}/conf</additionalAppResources>
                     <bundleArguments>
-                        <icon>${project.basedir}/src/main/deploy/package/windows/clip_share.ico</icon>
+                        <icon>${project.basedir}/src/main/deploy/package/windows/app-icon.ico</icon>
                     </bundleArguments>
                     <needShortcut>true</needShortcut>
                 </configuration>
@@ -64,7 +67,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.IOhype.MainApp</mainClass>
+                            <mainClass>com.iohype.MainApp</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -89,37 +92,6 @@
 
 
     <dependencies>
-        <!-- Apache Commons -->
-
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.6</version>
-        </dependency>
-
-        <!-- Logging  -->
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>${log4j.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>io.github.typhon0</groupId>
             <artifactId>AnimateFX</artifactId>

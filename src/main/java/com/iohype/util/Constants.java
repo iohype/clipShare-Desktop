@@ -1,4 +1,4 @@
-package com.IOhype.util;
+package com.iohype.util;
 
 public class Constants {
     public static final int DEFAULT_PORT = 9090;

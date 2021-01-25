@@ -1,14 +1,14 @@
-package com.IOhype.controllers;
+package com.iohype.controllers;
 
 import animatefx.animation.FadeIn;
 import animatefx.animation.FadeOut;
 import animatefx.animation.Shake;
-import com.IOhype.MainApp;
-import com.IOhype.model.ClipProps;
-import com.IOhype.util.Alerts;
-import com.IOhype.util.Constants;
-import com.IOhype.util.Helper;
-import com.IOhype.util.Session;
+import com.iohype.MainApp;
+import com.iohype.model.ClipProps;
+import com.iohype.util.Alerts;
+import com.iohype.util.Constants;
+import com.iohype.util.Helper;
+import com.iohype.util.Session;
 import com.jfoenix.controls.JFXButton;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -27,6 +27,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -150,6 +151,8 @@ public class MainSceneController implements Initializable {
     @FXML
     private Label helpLbl;
 
+    // user declared variables _______________________________________________
+
     private Thread serverThread;
 
     private Thread clientThread;
@@ -160,6 +163,9 @@ public class MainSceneController implements Initializable {
 
     private Alerts alerts;
 
+    private boolean isServerRunning = false; // get server status
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //initialize UI content
@@ -167,12 +173,22 @@ public class MainSceneController implements Initializable {
         clientConnectionPane.setOpacity( 0 );
         ipAddress_server.setText( null );
         timeline = null;
-        footerTagLbl.setText( "IOhype " + LocalDate.now().getYear() );
+        footerTagLbl.setText( "ioHype " + LocalDate.now().getYear() );
         setFont();
         progressIndicator.setVisible( false );
         alerts = new Alerts();
 
-        closeBtn.setOnAction( event -> System.exit( 0 ) ); // action event to close window
+        closeBtn.setOnAction( event -> {
+            if (isServerRunning){
+                try {
+                    Helper.killServer();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            System.exit( 0 );
+
+        } ); // action event to close window
 
         minimiseBtn.setOnAction( event -> {
             Stage stage = (Stage) minimiseBtn.getScene().getWindow();
@@ -249,11 +265,31 @@ public class MainSceneController implements Initializable {
 
         } );
 
+        Session.isClientConnected.addListener( (obs, oldValue, newValue) -> {
+            if (newValue.equals( true )){
+                System.out.println( "Client is still connected" );
+            }
+            else if (newValue.equals( false )){
+                Session.edit_port = true;
+                timeline.stop(); //stop the timeline from executing the keyframe action
+                if (clientThread.isAlive()){
+                    clientThread.interrupt(); // stop the thread handling the client actions
+                    clientThread = null;
+                }
+                sceneChange( clientConnectionPane, homePane ); //change scene back to home scene
+                try {
+                    alerts.displayTray( "Device Disconnected","Disconnected from host connection" );
+                } catch (AWTException e) {
+                    e.printStackTrace();
+                }
+                shakeAnimateNavPane();
+            }
+        } );
 
     }
 
     @FXML
-    private void HandleClientConnection(ActionEvent event) throws IOException {
+    private void HandleClientConnection(ActionEvent event) throws IOException, AWTException {
         BoxBlur blur = new BoxBlur( 7, 7, 7 );
         stackPane.setEffect( blur );
         root.getStyleClass().add( "pane-fade-color" );
@@ -265,7 +301,9 @@ public class MainSceneController implements Initializable {
 
         if (result) {
             Session.edit_port = false;
+            alerts.displayTray( "Connected to host","Device is connected to host on "+Session.appConfig.getPort() );
             sceneChange( homePane, clientConnectionPane );
+            Session.isClientConnected.setValue( true );
             ipAddress_client.setText( Session.clipProps.getIpAddress() );
             clientThread = new Thread( () -> {
                 if (timeline == null) {
@@ -284,24 +322,33 @@ public class MainSceneController implements Initializable {
     }
 
     @FXML
-    private void HandleDisconnectServerConnect(ActionEvent event) throws IOException {
+    private void HandleDisconnectServerConnect(ActionEvent event) throws IOException, AWTException {
         Session.edit_port = true;
         timeline.stop(); //stop the timeline from executing the keyframe action
         Helper.killServer(); //kill the pbgopy server from receiving requests
         serverThread.interrupt(); //stop the server thread from handling the server actions
         serverThread = null;
         sceneChange( serverPane, homePane ); //change scene back to home scene
+        alerts.displayTray( "Host Connection Stopped","Host connection is destroyed" );
         shakeAnimateNavPane();
+        isServerRunning = false;
     }
 
     @FXML
-    private void HandleDisconnectClientConnect(ActionEvent event) {
+    private void HandleDisconnectClientConnect(ActionEvent event) throws AWTException {
+        Session.isClientConnected.setValue( false );
         Session.edit_port = true;
         timeline.stop(); //stop the timeline from executing the keyframe action
-        clientThread.interrupt(); // stop the thread handling the client actions
-        clientThread = null;
+        if (clientThread.isAlive()){
+            clientThread.interrupt(); // stop the thread handling the client actions
+            clientThread = null;
+        }
+
+
         sceneChange( clientConnectionPane, homePane ); //change scene back to home scene
+        alerts.displayTray( "Device Disconnected","Disconnected from host connection" );
         shakeAnimateNavPane();
+
     }
 
     @FXML
@@ -332,13 +379,19 @@ public class MainSceneController implements Initializable {
                                 timeline = Helper.serverScheduler( Session.clipProps.getIpAddress() ); //schedule up requests to the server
                             }
                             timeline.play(); // start timeline of scheduled server requests
-                        } catch (IOException e) {
+                            isServerRunning = true;
+                        } catch (IOException  e) {
                             e.printStackTrace();
                         }
                     } );
                     Platform.runLater( () -> {
                         port_serverLbl.setText( String.valueOf( Session.appConfig.getPort() ) );
                         ipAddress_server.setText( Session.inetAddress.getHostAddress() );
+                        try {
+                            alerts.displayTray("Host Started","Host running on port "+Session.appConfig.getPort());
+                        } catch (AWTException e) {
+                            e.printStackTrace();
+                        }
                         sceneChange( homePane, serverPane );   //change scene
                         progressIndicator.setVisible( false );
                     } );
@@ -349,7 +402,7 @@ public class MainSceneController implements Initializable {
             }
         } );
         networkThread.start();
-
+        Session.isClientConnected.setValue( false );
     }
 
     // change scenes with fade effects
@@ -375,6 +428,7 @@ public class MainSceneController implements Initializable {
 
     }
 
+    //set external fonts to text nodes
     private void setFont() {
         Platform.runLater( () -> {
             Font regularFontLarge = Font.loadFont( MainApp.class.getResourceAsStream( "/fonts/Montserrat/Montserrat-Regular.ttf" ), 15 );
@@ -389,12 +443,15 @@ public class MainSceneController implements Initializable {
             settingsLbl.setFont( semiBoldSmall );
             helpLbl.setFont( semiBoldSmall );
             footerTagLbl.setFont( regularFontSmall );
+            disconnectBtn.setFont( semiBoldLarge );
+            stopServerConnection.setFont( semiBoldLarge );
             fontLbl.setFont( italicFontLarge );
             fontLbl1.setFont( italicFontLarge );
             fontLbl12.setFont( semiBoldLarge );
             fontLbl3.setFont( italicFontLarge );
             fontLbl4.setFont( italicFontLarge );
             fontLbl5.setFont( regularFontLarge );
+
             //server page
             fontLbl11.setFont( italicFontLarge );
             fontLbl2.setFont( semiBoldLarge );
@@ -404,6 +461,7 @@ public class MainSceneController implements Initializable {
             ipAddress_server.setFont( semiBoldLarge );
             port_serverLbl.setFont( semiBoldLarge );
             clipboard_server.setFont( regularFontSmall );
+
             //client page
             fontLbl6.setFont( italicFontLarge );
             fontLbl7.setFont( italicFontLarge );
@@ -415,6 +473,7 @@ public class MainSceneController implements Initializable {
         } );
     }
 
+    //set dark mode based on css property file
     private void setDarkMode() {
         String dark_mode = MainApp.class.getResource( "/styles/dark_mode.css" ).toExternalForm();
         if (Session.appConfig.isDark_mode()) {
