@@ -43,7 +43,7 @@
                     <needShortcut>true</needShortcut>
                     <additionalAppResources>${project.basedir}/conf</additionalAppResources>
                     <bundleArguments>
-                        <icon>${project.basedir}/src/main/deploy/package/windows/app-icon.ico</icon>
+                        <icon>${project.basedir}/src/main/deploy/package/linux/app-icon.png</icon>
                     </bundleArguments>
                     <needShortcut>true</needShortcut>
                 </configuration>
@@ -123,6 +123,24 @@
             <artifactId>okhttp</artifactId>
             <version>4.9.0</version>
         </dependency>
+        <dependency>
+            <groupId>io.javalin</groupId>
+            <artifactId>javalin</artifactId>
+            <version>3.13.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.8.0-beta4</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.8.0-beta4</version>
+        </dependency>
+
 
     </dependencies>
 

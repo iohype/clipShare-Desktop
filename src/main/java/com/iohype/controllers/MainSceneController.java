@@ -10,6 +10,7 @@ import com.iohype.util.Constants;
 import com.iohype.util.Helper;
 import com.iohype.util.Session;
 import com.jfoenix.controls.JFXButton;
+import io.javalin.Javalin;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -165,6 +166,7 @@ public class MainSceneController implements Initializable {
 
     private boolean isServerRunning = false; // get server status
 
+    private Javalin clipServer;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -325,7 +327,9 @@ public class MainSceneController implements Initializable {
     private void HandleDisconnectServerConnect(ActionEvent event) throws IOException, AWTException {
         Session.edit_port = true;
         timeline.stop(); //stop the timeline from executing the keyframe action
-        Helper.killServer(); //kill the pbgopy server from receiving requests
+//        Helper.killServer(); //kill the pbgopy server from receiving requests
+        clipServer.stop();
+        clipServer = null;
         serverThread.interrupt(); //stop the server thread from handling the server actions
         serverThread = null;
         sceneChange( serverPane, homePane ); //change scene back to home scene
@@ -370,11 +374,14 @@ public class MainSceneController implements Initializable {
                     // initialise server thread
                     serverThread = new Thread( () -> {
                         try {
-                            if (Session.appConfig.getPort() == Constants.DEFAULT_PORT) {
-                                Helper.spinUpServer();
-                            } else {
-                                Helper.spinUpServerOnPort();
-                            }// starts up the server;
+                            clipServer = Helper.startServer();
+                            clipServer.start(Session.appConfig.getPort());
+//                            if (Session.appConfig.getPort() == Constants.DEFAULT_PORT) {
+//                                Helper.spinUpServer();
+//                            } else {
+//                                Helper.spinUpServerOnPort();
+//                            }// starts up the server;
+
                             if (timeline == null) {
                                 timeline = Helper.serverScheduler( Session.clipProps.getIpAddress() ); //schedule up requests to the server
                             }

@@ -1,11 +1,13 @@
 package com.iohype;
 
 import com.iohype.controllers.ConnectionTestController;
+import com.iohype.util.Helper;
 import javafx.application.Application;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -22,6 +24,7 @@ public class MainApp extends Application {
     public void start(Stage stage) throws Exception {
 //        show the welcome page as initial scene
         mainPageStage(stage).show();
+//        Helper.startServer(9090);
 
     }
 
@@ -33,9 +36,11 @@ public class MainApp extends Application {
 
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setTitle("Welcome");
+        stage.getIcons().add(new Image(MainApp.class.getResourceAsStream("/images/logo.png")));
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
+
 
         stage.setOnCloseRequest( e -> {
             e.consume();
