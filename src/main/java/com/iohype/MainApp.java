@@ -24,7 +24,7 @@ public class MainApp extends Application {
     public void start(Stage stage) throws Exception {
 //        show the welcome page as initial scene
         mainPageStage(stage).show();
-//        Helper.startServer(9090);
+//        Helper.createAppConfig();
 
     }
 
