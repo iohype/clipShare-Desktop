@@ -1,5 +1,6 @@
 package com.iohype.util;
 
+import com.iohype.MainApp;
 import com.iohype.model.AppConfig;
 import com.sun.javafx.PlatformUtil;
 import io.javalin.Javalin;
@@ -10,16 +11,17 @@ import javafx.application.Platform;
 import javafx.util.Duration;
 
 import java.awt.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.Properties;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
 import java.util.regex.Pattern;
 
 import static com.iohype.util.Session.clipProps;
@@ -185,44 +187,58 @@ public class Helper {
     }
 
     //create properties file for app data
-    public static AppConfig getAppConfig() throws IOException {
-        String windowsPath = new File( "" ).getAbsoluteFile() + "\\config.properties";
-        String linuxPath = new File( "" ).getAbsoluteFile() + "/config.properties";
-        String path = PlatformUtil.isWindows() ? windowsPath : linuxPath;
-
-        if (Files.exists( Paths.get( path ) )) {
-            Properties properties = new Properties();
-            FileInputStream fileInputStream =  new FileInputStream( path );
-            properties.load( fileInputStream );
-            return new AppConfig( Boolean.parseBoolean( properties.getProperty( "dark_mode" ) ), Boolean.parseBoolean( properties.getProperty( "beep" ) ), Integer.parseInt( properties.getProperty( "port" ) ) );
+    public static AppConfig getAppConfig() throws BackingStoreException {
+        if (Preferences.userRoot().nodeExists( MainApp.class.getName() )) {
+            Preferences pref = Preferences.userRoot().node( MainApp.class.getName() );
+            return new AppConfig( pref.getBoolean( "dark_mode", false ), pref.getBoolean( "beep", false ), pref.getInt( "port", 9090 ) );
         } else {
-            Properties properties = new Properties();
-            properties.put( "port", "9090" );
-            properties.put( "beep", "false" );
-            properties.put( "dark_mode", "false" );
-            FileOutputStream fileOutputStream =  new FileOutputStream( path );
-            properties.store( fileOutputStream, "Updated on " + LocalDate.now() );
-            return new AppConfig( Boolean.parseBoolean( properties.getProperty( "dark_mode" ) ), Boolean.parseBoolean( properties.getProperty( "beep" ) ), Integer.parseInt( properties.getProperty( "port" ) ) );
+            Preferences pref = Preferences.userRoot().node( MainApp.class.getName() );
+            pref.putBoolean( "dark_mode", false );
+            pref.putBoolean( "beep", false );
+            pref.putInt( "port", 9090 );
+            return new AppConfig( pref.getBoolean( "dark_mode", false ), pref.getBoolean( "beep", false ), pref.getInt( "port", 9090 ) );
         }
-
+//        String windowsPath = new File( "" ).getAbsoluteFile() + "\\config.properties";
+//        String linuxPath = new File( "" ).getAbsoluteFile() + "/config.properties";
+//        String path = PlatformUtil.isWindows() ? windowsPath : linuxPath;
+//
+//        if (Files.exists( Paths.get( path ) )) {
+//            Properties properties = new Properties();
+//            FileInputStream fileInputStream =  new FileInputStream( path );
+//            properties.load( fileInputStream );
+//            return new AppConfig( Boolean.parseBoolean( properties.getProperty( "dark_mode" ) ), Boolean.parseBoolean( properties.getProperty( "beep" ) ), Integer.parseInt( properties.getProperty( "port" ) ) );
+//        } else {
+//            Properties properties = new Properties();
+//            properties.put( "port", "9090" );
+//            properties.put( "beep", "false" );
+//            properties.put( "dark_mode", "false" );
+//            FileOutputStream fileOutputStream =  new FileOutputStream( path );
+//            properties.store( fileOutputStream, "Updated on " + LocalDate.now() );
+//            return new AppConfig( Boolean.parseBoolean( properties.getProperty( "dark_mode" ) ), Boolean.parseBoolean( properties.getProperty( "beep" ) ), Integer.parseInt( properties.getProperty( "port" ) ) );
+//        }
     }
 
     //set config properties
     public static void setAppConfig(AppConfig appConfig) throws IOException {
-        Properties properties = new Properties();
-        if (PlatformUtil.isWindows()) {
-            properties.load( new FileInputStream( new File( "" ).getAbsoluteFile() + "\\config.properties" ) );
-        } else if (PlatformUtil.isLinux()) {
-            properties.load( new FileInputStream( new File( "" ).getAbsoluteFile() + "/config.properties" ) );
-        }
-        properties.put( "dark_mode", String.valueOf( appConfig.isDark_mode() ) );
-        properties.put( "beep", String.valueOf( appConfig.isBeep() ) );
-        properties.put( "port", String.valueOf( appConfig.getPort() ) );
-        if (PlatformUtil.isWindows()) {
-            properties.store( new FileOutputStream( new File( "" ).getAbsoluteFile() + "\\config.properties" ), "Updated on " + LocalDate.now() );
-        } else if (PlatformUtil.isLinux()) {
-            properties.store( new FileOutputStream( new File( "" ).getAbsoluteFile() + "/config.properties" ), "Updated on " + LocalDate.now() );
-        }
+        Preferences pref = Preferences.userRoot().node( MainApp.class.getName() );
+        pref.putBoolean( "dark_mode", appConfig.isDark_mode() );
+        pref.putBoolean( "beep", appConfig.isBeep() );
+        pref.putInt( "port", appConfig.getPort() );
+
+//        Properties properties = new Properties();
+//        if (PlatformUtil.isWindows()) {
+//            properties.load( new FileInputStream( new File( "" ).getAbsoluteFile() + "\\config.properties" ) );
+//        } else if (PlatformUtil.isLinux()) {
+//            properties.load( new FileInputStream( new File( "" ).getAbsoluteFile() + "/config.properties" ) );
+//        }
+//        properties.put( "dark_mode", String.valueOf( appConfig.isDark_mode() ) );
+//        properties.put( "beep", String.valueOf( appConfig.isBeep() ) );
+//        properties.put( "port", String.valueOf( appConfig.getPort() ) );
+//        if (PlatformUtil.isWindows()) {
+//            properties.store( new FileOutputStream( new File( "" ).getAbsoluteFile() + "\\config.properties" ), "Updated on " + LocalDate.now() );
+//        } else if (PlatformUtil.isLinux()) {
+//            properties.store( new FileOutputStream( new File( "" ).getAbsoluteFile() + "/config.properties" ), "Updated on " + LocalDate.now() );
+//        }
 
     }
 

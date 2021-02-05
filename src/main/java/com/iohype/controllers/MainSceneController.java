@@ -6,7 +6,6 @@ import animatefx.animation.Shake;
 import com.iohype.MainApp;
 import com.iohype.model.ClipProps;
 import com.iohype.util.Alerts;
-import com.iohype.util.Constants;
 import com.iohype.util.Helper;
 import com.iohype.util.Session;
 import com.jfoenix.controls.JFXButton;
@@ -33,6 +32,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
+import java.util.prefs.BackingStoreException;
 
 public class MainSceneController implements Initializable {
     @FXML
@@ -181,7 +181,7 @@ public class MainSceneController implements Initializable {
         alerts = new Alerts();
 
         closeBtn.setOnAction( event -> {
-            if (isServerRunning){
+            if (isServerRunning) {
                 try {
                     Helper.killServer();
                 } catch (IOException e) {
@@ -261,26 +261,25 @@ public class MainSceneController implements Initializable {
                 this.clipboard_client.textProperty().bind( Session.clipProps.clipStringProperty() );
 
 
-            } catch (IOException e) {
+            } catch (BackingStoreException e) {
                 e.printStackTrace();
             }
 
         } );
 
         Session.isClientConnected.addListener( (obs, oldValue, newValue) -> {
-            if (newValue.equals( true )){
+            if (newValue.equals( true )) {
                 System.out.println( "Client is still connected" );
-            }
-            else if (newValue.equals( false )){
+            } else if (newValue.equals( false )) {
                 Session.edit_port = true;
                 timeline.stop(); //stop the timeline from executing the keyframe action
-                if (clientThread.isAlive()){
+                if (clientThread.isAlive()) {
                     clientThread.interrupt(); // stop the thread handling the client actions
                     clientThread = null;
                 }
                 sceneChange( clientConnectionPane, homePane ); //change scene back to home scene
                 try {
-                    alerts.displayTray( "Device Disconnected","Disconnected from host connection" );
+                    alerts.displayTray( "Device Disconnected", "Disconnected from host connection" );
                 } catch (AWTException e) {
                     e.printStackTrace();
                 }
@@ -303,7 +302,7 @@ public class MainSceneController implements Initializable {
 
         if (result) {
             Session.edit_port = false;
-            alerts.displayTray( "Connected to host","Device is connected to host on "+Session.appConfig.getPort() );
+            alerts.displayTray( "Connected to host", "Device is connected to host on " + Session.appConfig.getPort() );
             sceneChange( homePane, clientConnectionPane );
             Session.isClientConnected.setValue( true );
             ipAddress_client.setText( Session.clipProps.getIpAddress() );
@@ -333,7 +332,7 @@ public class MainSceneController implements Initializable {
         serverThread.interrupt(); //stop the server thread from handling the server actions
         serverThread = null;
         sceneChange( serverPane, homePane ); //change scene back to home scene
-        alerts.displayTray( "Host Connection Stopped","Host connection is destroyed" );
+        alerts.displayTray( "Host Connection Stopped", "Host connection is destroyed" );
         shakeAnimateNavPane();
         isServerRunning = false;
     }
@@ -343,14 +342,14 @@ public class MainSceneController implements Initializable {
         Session.isClientConnected.setValue( false );
         Session.edit_port = true;
         timeline.stop(); //stop the timeline from executing the keyframe action
-        if (clientThread.isAlive()){
+        if (clientThread.isAlive()) {
             clientThread.interrupt(); // stop the thread handling the client actions
             clientThread = null;
         }
 
 
         sceneChange( clientConnectionPane, homePane ); //change scene back to home scene
-        alerts.displayTray( "Device Disconnected","Disconnected from host connection" );
+        alerts.displayTray( "Device Disconnected", "Disconnected from host connection" );
         shakeAnimateNavPane();
 
     }
@@ -375,7 +374,7 @@ public class MainSceneController implements Initializable {
                     serverThread = new Thread( () -> {
                         try {
                             clipServer = Helper.startServer();
-                            clipServer.start(Session.appConfig.getPort());
+                            clipServer.start( Session.appConfig.getPort() );
 //                            if (Session.appConfig.getPort() == Constants.DEFAULT_PORT) {
 //                                Helper.spinUpServer();
 //                            } else {
@@ -387,7 +386,7 @@ public class MainSceneController implements Initializable {
                             }
                             timeline.play(); // start timeline of scheduled server requests
                             isServerRunning = true;
-                        } catch (IOException  e) {
+                        } catch (IOException e) {
                             e.printStackTrace();
                         }
                     } );
@@ -395,7 +394,7 @@ public class MainSceneController implements Initializable {
                         port_serverLbl.setText( String.valueOf( Session.appConfig.getPort() ) );
                         ipAddress_server.setText( Session.inetAddress.getHostAddress() );
                         try {
-                            alerts.displayTray("Host Started","Host running on port "+Session.appConfig.getPort());
+                            alerts.displayTray( "Host Started", "Host running on port " + Session.appConfig.getPort() );
                         } catch (AWTException e) {
                             e.printStackTrace();
                         }
@@ -404,7 +403,7 @@ public class MainSceneController implements Initializable {
                     } );
                     serverThread.start(); //start server Thread
                 }
-            } catch (IOException e) {
+            } catch (IOException | BackingStoreException e) {
                 e.printStackTrace();
             }
         } );

@@ -21,6 +21,7 @@ import javafx.scene.text.Font;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.prefs.BackingStoreException;
 
 public class SettingsSceneController implements Initializable {
     @FXML
@@ -94,7 +95,7 @@ public class SettingsSceneController implements Initializable {
                 portField.setText( String.valueOf( appConfig.getPort() ) );
                 themeToggle.setSelected( appConfig.isDark_mode() );
                 beepToggle.setSelected( appConfig.isBeep() );
-            } catch (IOException e) {
+            } catch ( BackingStoreException e) {
                 e.printStackTrace();
             }
         } );

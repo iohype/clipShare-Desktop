@@ -24,7 +24,7 @@ public class Alerts {
     }
 
     public void displayTray(String title, String message) throws AWTException {
-        if (SystemTray.isSupported()){
+        if (SystemTray.isSupported()) {
             //Obtain only one instance of the SystemTray object
             SystemTray tray = SystemTray.getSystemTray();
 
@@ -41,9 +41,8 @@ public class Alerts {
             tray.add( trayIcon );
 
             trayIcon.displayMessage( title, message, TrayIcon.MessageType.INFO );
-        }
-        else {
-            Notification( title, message);
+        } else {
+            Notification( title, message );
         }
 
     }

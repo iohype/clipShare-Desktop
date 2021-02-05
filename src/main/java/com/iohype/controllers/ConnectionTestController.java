@@ -6,8 +6,6 @@ import com.iohype.util.Constants;
 import com.iohype.util.Helper;
 import com.iohype.util.Session;
 import com.jfoenix.controls.JFXButton;
-import javafx.animation.Animation;
-import javafx.animation.RotateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,9 +16,8 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import java.io.IOException;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
