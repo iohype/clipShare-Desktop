@@ -16,18 +16,16 @@ import java.io.IOException;
 
 public class MainApp extends Application {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args)  {
         launch( args );
     }
 
     public void start(Stage stage) throws Exception {
 //        show the welcome page as initial scene
         mainPageStage( stage ).show();
-//        Helper.createAppConfig();
-
     }
 
-    public static Stage mainPageStage(Stage stage) throws IOException {
+    private static Stage mainPageStage(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         String fxmlLocation = "/fxml/mainScene.fxml";
         loader.setLocation( MainApp.class.getResource( fxmlLocation ) );
@@ -41,10 +39,7 @@ public class MainApp extends Application {
         stage.setScene( scene );
 
 
-        stage.setOnCloseRequest( e -> {
-            e.consume();
-
-        } );
+        stage.setOnCloseRequest( Event::consume );
 
         return stage;
     }

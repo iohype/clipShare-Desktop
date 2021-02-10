@@ -77,51 +77,10 @@ public class Helper {
 
     }
 
-    //start up pbgopy server
-    public static void spinUpServer() throws IOException {
-        Process process = null;
-        if (PlatformUtil.isWindows()) {
-            File file = new File( new File( "" ).getAbsolutePath() + "\\" );
-            System.out.println( "Running on Windows" );
-            process = Runtime.getRuntime().exec( new String[]{"cmd", "/c", ".\\pbgopy serve"}, null, file );
-        } else if (PlatformUtil.isLinux()) {
-            File file = new File( new File( "" ).getAbsolutePath() + "/" );
-            System.out.println( "Running on Linux" );
-            process = Runtime.getRuntime().exec( new String[]{"/bin/sh", "-c", "./pbgopy serve"}, null, file );
-        }
-
-        assert process != null;
-//        process.destroy();
-    }
-
-    //start up pbgopy server
-    public static void spinUpServerOnPort() throws IOException {
-        Process process = null;
-        if (PlatformUtil.isWindows()) {
-            File file = new File( new File( "" ).getAbsolutePath() + "\\" );
-            System.out.println( "Running on Windows" );
-            process = Runtime.getRuntime().exec( new String[]{"cmd", "/c", ".\\pbgopy serve --port=" + Session.appConfig.getPort()}, null, file );
-        } else if (PlatformUtil.isLinux()) {
-            File file = new File( new File( "" ).getAbsolutePath() + "/" );
-            System.out.println( "Running on Linux" );
-            process = Runtime.getRuntime().exec( new String[]{"/bin/sh", "-c", "./pbgopy serve --port=" + Session.appConfig.getPort()}, null, file );
-        }
-
-        assert process != null;
-//        process.destroy();
-    }
-
-    // kill the pbgopy server from running
-    public static void killServer() throws IOException {
-        Process process = null;
-        if (PlatformUtil.isWindows()) {
-            process = Runtime.getRuntime().exec( "taskkill /F /IM pbgopy.exe" );
-        } else if (PlatformUtil.isLinux()) {
-            process = Runtime.getRuntime().exec( "killall pbgopy" );
-        }
-
-//        kill -9 `jps | grep "DataNode" | cut -d " " -f 1`
-        printResults( process );
+    // kill the  server from running
+    public static void killServer(Javalin javalin) throws IOException {
+        javalin.stop();
+        javalin = null;
     }
 
     //automate request schedule to the server
@@ -198,48 +157,14 @@ public class Helper {
             pref.putInt( "port", 9090 );
             return new AppConfig( pref.getBoolean( "dark_mode", false ), pref.getBoolean( "beep", false ), pref.getInt( "port", 9090 ) );
         }
-//        String windowsPath = new File( "" ).getAbsoluteFile() + "\\config.properties";
-//        String linuxPath = new File( "" ).getAbsoluteFile() + "/config.properties";
-//        String path = PlatformUtil.isWindows() ? windowsPath : linuxPath;
-//
-//        if (Files.exists( Paths.get( path ) )) {
-//            Properties properties = new Properties();
-//            FileInputStream fileInputStream =  new FileInputStream( path );
-//            properties.load( fileInputStream );
-//            return new AppConfig( Boolean.parseBoolean( properties.getProperty( "dark_mode" ) ), Boolean.parseBoolean( properties.getProperty( "beep" ) ), Integer.parseInt( properties.getProperty( "port" ) ) );
-//        } else {
-//            Properties properties = new Properties();
-//            properties.put( "port", "9090" );
-//            properties.put( "beep", "false" );
-//            properties.put( "dark_mode", "false" );
-//            FileOutputStream fileOutputStream =  new FileOutputStream( path );
-//            properties.store( fileOutputStream, "Updated on " + LocalDate.now() );
-//            return new AppConfig( Boolean.parseBoolean( properties.getProperty( "dark_mode" ) ), Boolean.parseBoolean( properties.getProperty( "beep" ) ), Integer.parseInt( properties.getProperty( "port" ) ) );
-//        }
     }
 
     //set config properties
-    public static void setAppConfig(AppConfig appConfig) throws IOException {
+    public static void setAppConfig(AppConfig appConfig) {
         Preferences pref = Preferences.userRoot().node( MainApp.class.getName() );
         pref.putBoolean( "dark_mode", appConfig.isDark_mode() );
         pref.putBoolean( "beep", appConfig.isBeep() );
         pref.putInt( "port", appConfig.getPort() );
-
-//        Properties properties = new Properties();
-//        if (PlatformUtil.isWindows()) {
-//            properties.load( new FileInputStream( new File( "" ).getAbsoluteFile() + "\\config.properties" ) );
-//        } else if (PlatformUtil.isLinux()) {
-//            properties.load( new FileInputStream( new File( "" ).getAbsoluteFile() + "/config.properties" ) );
-//        }
-//        properties.put( "dark_mode", String.valueOf( appConfig.isDark_mode() ) );
-//        properties.put( "beep", String.valueOf( appConfig.isBeep() ) );
-//        properties.put( "port", String.valueOf( appConfig.getPort() ) );
-//        if (PlatformUtil.isWindows()) {
-//            properties.store( new FileOutputStream( new File( "" ).getAbsoluteFile() + "\\config.properties" ), "Updated on " + LocalDate.now() );
-//        } else if (PlatformUtil.isLinux()) {
-//            properties.store( new FileOutputStream( new File( "" ).getAbsoluteFile() + "/config.properties" ), "Updated on " + LocalDate.now() );
-//        }
-
     }
 
     //check if IP address format is valid
@@ -250,8 +175,8 @@ public class Helper {
         return IP_PATTERN.matcher( ipAddress ).matches();
     }
 
-    //whip in internal server to run witb endpoints
-    public static Javalin startServer() throws IOException {
+    //whip in internal server to run with endpoints
+    public static Javalin startServer() {
         Javalin app = Javalin.create();
         app.get( "/", ctx -> ctx.result( Session.serverClipProps.getClipString() ) );
         app.get( "/lastupdated", ctx -> ctx.result( String.valueOf( Session.serverClipProps.getServerTimeStamp() ) ) );

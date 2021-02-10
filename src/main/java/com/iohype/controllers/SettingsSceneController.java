@@ -115,7 +115,7 @@ public class SettingsSceneController implements Initializable {
     }
 
     @FXML
-    private void HandleSetToDefault(ActionEvent event) throws IOException {
+    private void HandleSetToDefault(ActionEvent event) {
         /*
         set session values of app config
          */
@@ -132,7 +132,7 @@ public class SettingsSceneController implements Initializable {
     }
 
     @FXML
-    private void HandleUpdateSettings(ActionEvent event) throws IOException {
+    private void HandleUpdateSettings(ActionEvent event) {
         boolean dark_mode = themeToggle.isSelected();
         boolean beep = beepToggle.isSelected();
 

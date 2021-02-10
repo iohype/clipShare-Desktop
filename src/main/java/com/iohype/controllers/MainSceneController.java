@@ -183,7 +183,7 @@ public class MainSceneController implements Initializable {
         closeBtn.setOnAction( event -> {
             if (isServerRunning) {
                 try {
-                    Helper.killServer();
+                    Helper.killServer(clipServer);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -323,12 +323,10 @@ public class MainSceneController implements Initializable {
     }
 
     @FXML
-    private void HandleDisconnectServerConnect(ActionEvent event) throws IOException, AWTException {
+    private void HandleDisconnectServerConnect(ActionEvent event) throws AWTException, IOException {
         Session.edit_port = true;
         timeline.stop(); //stop the timeline from executing the keyframe action
-//        Helper.killServer(); //kill the pbgopy server from receiving requests
-        clipServer.stop();
-        clipServer = null;
+        Helper.killServer(clipServer); //kill the pbgopy server from receiving requests
         serverThread.interrupt(); //stop the server thread from handling the server actions
         serverThread = null;
         sceneChange( serverPane, homePane ); //change scene back to home scene
