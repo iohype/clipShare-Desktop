@@ -2,7 +2,7 @@
 
 Clipshare is a java maven project that enables auto syncing of
 clipboards of connected devices. <br>  
-![title](sampleImages/homePage.png)
+<img src="./sampleImages/homePage.PNG">
 
 # Description
 
